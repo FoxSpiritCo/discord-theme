@@ -1,0 +1,46 @@
+/**
+ * @name Strawberry Melody Kirby Oneko Original Proportions
+ * @author Lewis Cox + ChatGPT
+ * @version 1.4.0
+ * @description Hosted Strawberry Melody theme + Kirby My Melody oneko, keeping each extracted sprite at its original proportions.
+ *
+ * Requires Vencord's built-in "oneko" plugin to be enabled.
+ */
+
+@import url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/StrawberryMelodyKawaiiLite_GitHubReady.theme.css");
+
+#oneko {
+  background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/kirby-my-melody-oneko-originalproportions.png") !important;
+  width: 32px !important;
+  height: 32px !important;
+  image-rendering: pixelated !important;
+  pointer-events: none !important;
+  z-index: 2147483647 !important;
+  transform: scale(1.55);
+  transform-origin: center;
+}
+
+#oneko::after {
+  content: "♡";
+  position: absolute;
+  left: 18px;
+  top: -12px;
+  font-size: 14px;
+  font-weight: 900;
+  color: #e49eb1;
+  text-shadow:
+    0 0 3px white,
+    0 0 6px rgba(244, 199, 211, 0.8);
+  animation: melody-heart-pop 1.8s ease-in-out infinite;
+}
+
+@keyframes melody-heart-pop {
+  0%, 100% {
+    opacity: 0.45;
+    transform: translateY(0) scale(0.9) rotate(-8deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.08) rotate(8deg);
+  }
+}
