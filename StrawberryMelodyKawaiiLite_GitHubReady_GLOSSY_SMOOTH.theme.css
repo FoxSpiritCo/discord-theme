@@ -1,0 +1,546 @@
+/**
+ * @name Strawberry Melody Glossy Smooth
+ * @author Lewis Cox + ChatGPT
+ * @version 8.0.0
+ * @description Glossy but performance-conscious Strawberry Melody theme. Keeps the pretty look while avoiding the worst scroll-FPS killers.
+ *
+ * Upload this file to GitHub by replacing:
+ * StrawberryMelodyKawaiiLite_GitHubReady.theme.css
+ *
+ * Your existing ORIGINALPROPORTIONS import can stay as-is.
+ */
+
+:root {
+  /* =========================
+     BACKGROUND
+     ========================= */
+  --sm-bg-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/9dd3f733c9c30a27ccda99370.png");
+  --sm-bg-position: center;
+  --sm-bg-size: cover;
+
+  /* =========================
+     PERFORMANCE SETTINGS
+     =========================
+     CSS cannot increase Discord's FPS limit.
+     Smoothness comes from reducing repaint/compositing cost.
+  */
+  --sm-fast: 120ms ease;
+  --sm-mid: 180ms ease;
+
+  /* =========================
+     COLOURS
+     ========================= */
+  --sm-text: #d46f91;
+  --sm-text-strong: #c45a82;
+  --sm-text-soft: #e49aae;
+  --sm-muted: #aa7c91;
+
+  --sm-pink: #f4c7d3;
+  --sm-pink-2: #efb6c4;
+  --sm-pink-3: #e49eb1;
+  --sm-pink-deep: #d87595;
+
+  --sm-white: #fffdfd;
+  --sm-cream: #fff7fb;
+  --sm-blue-soft: #d8f2f6;
+
+  /* =========================
+     GLOSSY COLUMN SHADING
+     More opaque than glass = smoother scrolling.
+     Gloss comes from gradients/borders, not backdrop-filter.
+  */
+  --sm-server-column: rgba(255, 235, 244, 0.78);
+  --sm-sidebar-column: rgba(255, 244, 249, 0.80);
+  --sm-header-column: rgba(255, 235, 243, 0.82);
+  --sm-chat-column: rgba(255, 255, 255, 0.70);
+  --sm-members-column: rgba(255, 241, 247, 0.80);
+  --sm-panel-strong: rgba(255, 255, 255, 0.86);
+  --sm-panel-hover: rgba(255, 230, 240, 0.72);
+  --sm-input: rgba(255, 255, 255, 0.86);
+
+  --sm-border: rgba(228, 158, 177, 0.34);
+  --sm-border-white: rgba(255, 255, 255, 0.72);
+  --sm-highlight: rgba(255, 255, 255, 0.44);
+
+  /* =========================
+     SHAPE
+     ========================= */
+  --sm-radius-xl: 22px;
+  --sm-radius-lg: 18px;
+  --sm-radius-md: 13px;
+  --sm-radius-sm: 10px;
+  --sm-radius-pill: 999px;
+
+  /* Discord vars */
+  --brand-500: var(--sm-pink-2) !important;
+  --brand-560: var(--sm-pink-3) !important;
+  --status-positive: #9fd48f !important;
+  --status-danger: #ec92a6 !important;
+}
+
+/* =========================
+   PERFORMANCE BASE
+   ========================= */
+
+/* Do not globally blur Discord. That is the main scroll killer. */
+*,
+*::before,
+*::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  text-shadow: none !important;
+}
+
+/* Avoid long animated transitions on message lists while still keeping tiny hover polish. */
+.visual-refresh .message__5126c,
+.visual-refresh .link__2ea32,
+.visual-refresh .layout__91a9d,
+.visual-refresh .interactive__972a0,
+.visual-refresh .tabBarItem_b9fccc,
+.visual-refresh .button__201d5,
+.visual-refresh .item_b3f026 {
+  transition:
+    background var(--sm-fast),
+    border-color var(--sm-fast),
+    color var(--sm-fast) !important;
+}
+
+/* Heavy elements should not animate while scrolling. */
+.visual-refresh .scroller__36d07,
+.visual-refresh .scroller__99e7c,
+.visual-refresh .members_c8ffbb,
+.visual-refresh .chatContent_f75fb0 {
+  will-change: auto !important;
+  transform: translateZ(0);
+}
+
+/* =========================
+   BACKGROUND
+   ========================= */
+
+body,
+#app-mount,
+.app__160d8,
+.bg__960e4 {
+  background: transparent !important;
+  color: var(--sm-text) !important;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-image: var(--sm-bg-image);
+  background-position: var(--sm-bg-position);
+  background-size: var(--sm-bg-size);
+  background-repeat: no-repeat;
+  /* No CSS filter here. Filter on full-screen backgrounds is expensive. */
+}
+
+/* Single cheap overlay instead of multiple heavy radial effects */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    linear-gradient(135deg, rgba(255, 245, 250, 0.10), rgba(255, 255, 255, 0.04)),
+    rgba(255, 255, 255, 0.04);
+}
+
+/* =========================
+   CLEAR DISCORD BASE
+   ========================= */
+
+.visual-refresh .wrapper_ef3116,
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .container__2637a,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .scroller__99e7c,
+.visual-refresh .container__9293f.themed__9293f,
+.visual-refresh .chat_f75fb0,
+.visual-refresh .container_c8ffbb,
+.visual-refresh .members_c8ffbb,
+.visual-refresh .members_c8ffbb > div,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .contentRegion__23e6b,
+.visual-refresh .contentRegionScroller__23e6b,
+.visual-refresh .standardSidebarView__23e6b,
+.visual-refresh .sidebarRegionScroller__23e6b,
+.visual-refresh .layer__960e4,
+.visual-refresh .page_c48ade {
+  background: transparent !important;
+}
+
+/* =========================
+   GLOSSY CLEARVISION-STYLE COLUMNS
+   ========================= */
+
+.visual-refresh .wrapper_ef3116 {
+  background:
+    linear-gradient(180deg, var(--sm-highlight), transparent 20%),
+    var(--sm-server-column) !important;
+  border-right: 1px solid var(--sm-border);
+}
+
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .container__2637a {
+  background:
+    linear-gradient(180deg, var(--sm-highlight), transparent 18%),
+    linear-gradient(90deg, rgba(255,255,255,0.26), transparent),
+    var(--sm-sidebar-column) !important;
+  border-right: 1px solid var(--sm-border);
+}
+
+.visual-refresh .container__9293f,
+.visual-refresh .callContainer_cb9592,
+.visual-refresh .wrapper_cb9592,
+.visual-refresh .root_bfe55a {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.08)),
+    var(--sm-header-column) !important;
+  border-bottom: 1px solid var(--sm-border);
+}
+
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .peopleColumn__133bf,
+.visual-refresh .contentRegion__23e6b,
+.visual-refresh .sidebarRegion__23e6b {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.36), rgba(255,255,255,0.10) 16%, transparent 42%),
+    var(--sm-chat-column) !important;
+  border: 1px solid var(--sm-border-white);
+}
+
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .container_c8ffbb {
+  background:
+    linear-gradient(180deg, var(--sm-highlight), transparent 20%),
+    var(--sm-members-column) !important;
+  border-left: 1px solid var(--sm-border);
+}
+
+.visual-refresh .panels_c48ade,
+.visual-refresh .container__37e49 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.62), rgba(255,255,255,0.12)),
+    var(--sm-panel-strong) !important;
+  border: 1px solid var(--sm-border-white);
+}
+
+/* Layout rounding */
+.visual-refresh .container__9293f {
+  border-radius: 0 0 var(--sm-radius-lg) var(--sm-radius-lg);
+  margin: 0 8px 8px 8px;
+}
+
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .peopleColumn__133bf {
+  border-radius: var(--sm-radius-xl);
+  margin: 0 8px 8px 0;
+}
+
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf {
+  border-radius: var(--sm-radius-xl);
+  margin: 0 8px 8px 0;
+}
+
+.visual-refresh .panels_c48ade {
+  border-radius: var(--sm-radius-xl);
+  margin: 8px;
+}
+
+/* Cheap glossy divider line */
+.visual-refresh .sidebar_c48ade::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 1px;
+  height: 100%;
+  background: rgba(228, 158, 177, 0.36);
+  pointer-events: none;
+}
+
+/* =========================
+   PINK TEXT
+   ========================= */
+
+.visual-refresh .title__9293f,
+.visual-refresh .name__2ea32,
+.visual-refresh .username__0a06e,
+.visual-refresh .headerText_c19a55,
+.visual-refresh .markup__75297,
+.visual-refresh .messageContent_c19a55,
+.visual-refresh .membersGroup_c8ffbb,
+.visual-refresh .defaultColor__5345c,
+.visual-refresh .text-md\/normal_cf4812,
+.visual-refresh .text-sm\/normal_cf4812,
+.visual-refresh .text-xs\/normal_cf4812,
+.visual-refresh .header_b3f026,
+.visual-refresh .tabBarItem_b9fccc,
+.visual-refresh .link__972a0,
+.visual-refresh .channelName__4ebbb,
+.visual-refresh .title__10613,
+.visual-refresh .nameAndDecorators__91a9d,
+.visual-refresh .activityText__5d473,
+.visual-refresh .overflow__82b15,
+.visual-refresh .name__20a53,
+.visual-refresh .username_c19a55 {
+  color: var(--sm-text) !important;
+}
+
+.visual-refresh .username__0a06e,
+.visual-refresh .username_c19a55,
+.visual-refresh .headerText_c19a55,
+.visual-refresh .name__2ea32,
+.visual-refresh .membersGroup_c8ffbb {
+  color: var(--sm-text-strong) !important;
+  font-weight: 700 !important;
+}
+
+.visual-refresh .muted__73245,
+.visual-refresh .subtext__972a0,
+.visual-refresh .description_ddd181,
+.visual-refresh .labelDescriptor_ddd181,
+.visual-refresh .text-sm\/medium_cf4812,
+.visual-refresh .text-xs\/medium_cf4812,
+.visual-refresh .timestamp_c19a55,
+.visual-refresh .subtitleContainer__01ae2 {
+  color: var(--sm-muted) !important;
+}
+
+/* =========================
+   CHANNELS / DMS / SELECTED
+   ========================= */
+
+.visual-refresh .modeSelected__2ea32 .link__2ea32,
+.visual-refresh .modeSelected__2ea32:hover .link__2ea32,
+.visual-refresh .selected__91a9d .layout__91a9d,
+.visual-refresh .interactiveSelected__972a0,
+.visual-refresh .tabBarItem_b9fccc[aria-selected="true"],
+.visual-refresh .side_b3f026 .themed_b3f026.selected_b3f026.item_b3f026,
+.visual-refresh .topPill_b3f026 .themed_b3f026.selected_b3f026.item_b3f026 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.45), transparent 60%),
+    rgba(244, 199, 211, 0.88) !important;
+  border: 1px solid rgba(228, 158, 177, 0.46);
+  border-radius: var(--sm-radius-pill) !important;
+  color: var(--sm-text-strong) !important;
+}
+
+.visual-refresh .link__2ea32:hover,
+.visual-refresh .layout__91a9d:hover,
+.visual-refresh .interactive__972a0:hover,
+.visual-refresh .tabBarItem_b9fccc:hover,
+.visual-refresh .item_b3f026:hover,
+.visual-refresh .button__201d5:hover,
+.visual-refresh .childWrapper__6e9f8:hover,
+.visual-refresh .itemCard__7e549:hover {
+  background: var(--sm-panel-hover) !important;
+}
+
+.visual-refresh .unread__2ea32,
+.visual-refresh .item__58105 {
+  background-color: var(--sm-pink-3) !important;
+}
+
+.visual-refresh .unreadRelevant__2ea32 .name__2ea32,
+.visual-refresh .modeUnreadImportant__2ea32 .name__2ea32 {
+  color: var(--sm-text-strong) !important;
+}
+
+/* =========================
+   INPUTS / SEARCH
+   ========================= */
+
+.visual-refresh .searchBar__97492,
+.visual-refresh .searchBarComponent__35e86,
+.visual-refresh .inner_c0bea0,
+.visual-refresh .container__55c99,
+.visual-refresh .channelTextArea_f75fb0,
+.visual-refresh .themedBackground__74017,
+.visual-refresh .scrollableContainer__74017 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.55), rgba(255,255,255,0.12)),
+    var(--sm-input) !important;
+  border: 1px solid rgba(255,255,255,0.68);
+  color: var(--sm-text) !important;
+  border-radius: var(--sm-radius-lg) !important;
+}
+
+.visual-refresh .searchBar__97492,
+.visual-refresh .searchBarComponent__35e86 {
+  border-radius: var(--sm-radius-pill) !important;
+}
+
+.visual-refresh .channelTextArea_f75fb0:focus-within,
+.visual-refresh .scrollableContainer__74017:focus-within {
+  background: rgba(255,255,255,0.92) !important;
+  border-color: rgba(228, 158, 177, 0.56) !important;
+}
+
+.visual-refresh .placeholder__1b31f,
+.visual-refresh .slateTextArea_ec4baf {
+  color: var(--sm-text-soft) !important;
+}
+
+/* =========================
+   ICON SHAPES
+   ========================= */
+
+.visual-refresh .wrapper__6e9f8 foreignObject,
+.visual-refresh .folderIconWrapper__48112 {
+  border-radius: 34% !important;
+}
+
+.visual-refresh .avatar__44b0c {
+  border-radius: 32% !important;
+}
+
+/* =========================
+   MESSAGES
+   ========================= */
+
+.visual-refresh .message__5126c {
+  border-radius: var(--sm-radius-md);
+}
+
+.visual-refresh .message__5126c:hover {
+  background: rgba(255,255,255,0.34) !important;
+}
+
+.visual-refresh .mentioned__5126c {
+  background: rgba(244, 199, 211, 0.38) !important;
+  border-left: 3px solid var(--sm-pink-3);
+}
+
+.visual-refresh .mentioned__5126c::before,
+.visual-refresh .children__9293f::after,
+.visual-refresh .form_f75fb0::before,
+.visual-refresh .chatGradient__36d07,
+.visual-refresh .chatTypingGradientAtBottom__36d07,
+.visual-refresh .chatTypingGradientNotAtBottom__36d07 {
+  background: transparent !important;
+}
+
+/* =========================
+   BUTTONS / BADGES
+   ========================= */
+
+.visual-refresh .button__201d5,
+.visual-refresh .lookFilled__201d5,
+.visual-refresh .lookOutlined__201d5 {
+  border-radius: var(--sm-radius-md) !important;
+}
+
+.visual-refresh .lookFilled__201d5.colorBrand__201d5,
+.visual-refresh .lookFilled__201d5.colorPrimary__201d5 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.32), transparent),
+    var(--sm-pink-2) !important;
+  color: white !important;
+  border: none !important;
+}
+
+.visual-refresh .lookFilled__201d5.colorBrand__201d5:hover,
+.visual-refresh .lookFilled__201d5.colorPrimary__201d5:hover {
+  background: var(--sm-pink-3) !important;
+}
+
+.visual-refresh .numberBadge__2b1f5,
+.visual-refresh .newBadge__4ed1a,
+.visual-refresh .botTagRegular__82f07,
+.visual-refresh .mention,
+.visual-refresh .barFill__001a7 {
+  background: var(--sm-pink-3) !important;
+  color: white !important;
+}
+
+/* =========================
+   POPOUTS / MENUS / CARDS
+   ========================= */
+
+.visual-refresh .menu_c1e9c4,
+.visual-refresh .root__49fc1,
+.visual-refresh .userPopoutOuter_c69a7b,
+.visual-refresh .outer_c0bea0,
+.visual-refresh .contentWrapper__08434,
+.visual-refresh .contentWrapper_eab878,
+.visual-refresh .emojiPicker_c0e32c,
+.visual-refresh .itemCard__7e549,
+.visual-refresh .wrapper__00943,
+.visual-refresh .section__00943,
+.visual-refresh .container__53cea,
+.visual-refresh .container_dca174,
+.visual-refresh .accountProfileCard__1fed1,
+.visual-refresh .background__1fed1,
+.visual-refresh .fieldList__1fed1 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.50), rgba(255,255,255,0.12)),
+    rgba(255,255,255,0.88) !important;
+  border: 1px solid rgba(255,255,255,0.72);
+  border-radius: var(--sm-radius-xl) !important;
+}
+
+.visual-refresh .colorDefault_c1e9c4.focused_c1e9c4,
+.visual-refresh .colorDefault_c1e9c4:active:not(.hideInteraction_c1e9c4) {
+  background: rgba(244, 199, 211, 0.56) !important;
+  color: var(--sm-text-strong) !important;
+}
+
+/* =========================
+   SCROLLBARS / POLISH
+   ========================= */
+
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(228, 158, 177, 0.88) !important;
+  border: 3px solid transparent !important;
+  background-clip: padding-box !important;
+  border-radius: 999px !important;
+}
+
+::selection {
+  background: var(--sm-pink);
+  color: var(--sm-text-strong);
+}
+
+.visual-refresh .childWrapper__6e9f8 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.40), transparent),
+    rgba(244,199,211,0.92) !important;
+  color: white !important;
+  border-radius: 38% !important;
+}
+
+/* remove Discord gradients */
+.visual-refresh .gradient__41e22,
+.visual-refresh .theme-dark .container__4d95d:after {
+  background: transparent !important;
+}
+
+/* Respect reduced motion, but do not break Oneko plugin movement. */
+@media (prefers-reduced-motion: reduce) {
+  .visual-refresh .message__5126c,
+  .visual-refresh .link__2ea32,
+  .visual-refresh .layout__91a9d,
+  .visual-refresh .interactive__972a0,
+  .visual-refresh .tabBarItem_b9fccc,
+  .visual-refresh .button__201d5,
+  .visual-refresh .item_b3f026 {
+    transition: none !important;
+  }
+}
