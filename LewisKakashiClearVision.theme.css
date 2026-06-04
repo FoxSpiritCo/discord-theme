@@ -1,0 +1,291 @@
+/**
+ * @name Lewis Kakashi ClearVision
+ * @author Lewis Cox + ChatGPT
+ * @version 1.0.0
+ * @description ClearVision V7-based Kakashi/Raikiri theme for Vencord/BetterDiscord. Uses ClearVision imports and custom blue-purple anime styling.
+ * @source https://github.com/ClearVision/ClearVision-v7
+ * @license Apache-2.0 ClearVision base imports; custom styling by Lewis Cox + ChatGPT.
+ */
+
+/* ClearVision V7 core */
+@import url("https://clearvision.github.io/ClearVision-v7/main.css");
+@import url("https://clearvision.github.io/ClearVision-v7/betterdiscord.css");
+
+/* =========================
+   CLEARVISION SETTINGS
+   ========================= */
+
+:root {
+  /* ACCENT COLORS - sampled from the Kakashi image: lightning cyan, violet sky, dark navy */
+  --main-color: #38cfff;
+  --hover-color: #8a5cff;
+  --success-color: #43d18b;
+  --danger-color: #ff3f6e;
+
+  /* STATUS COLORS */
+  --online-color: #43d18b;
+  --idle-color: #ffbf4d;
+  --dnd-color: #ff3f6e;
+  --streaming-color: #8a5cff;
+  --offline-color: #6e7685;
+
+  /* APP BACKGROUND */
+  --background-shading-percent: 100%;
+  --background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/lewis-kakashi-bg.jpg");
+  --background-position: center;
+  --background-size: cover;
+  --background-attachment: fixed;
+
+  /* Keep this sharp and fast. Blur looks nice but kills FPS while scrolling. */
+  --background-filter: saturate(calc(var(--saturation-factor, 1) * 1.18)) contrast(1.06) brightness(0.74);
+
+  /* USER POPOUT BACKGROUND */
+  --user-popout-image: var(--background-image);
+  --user-popout-position: var(--background-position);
+  --user-popout-size: var(--background-size);
+  --user-popout-attachment: var(--background-attachment);
+  --user-popout-filter: saturate(calc(var(--saturation-factor, 1) * 1.15)) contrast(1.04) brightness(0.62);
+
+  /* USER MODAL BACKGROUND */
+  --user-modal-image: var(--background-image);
+  --user-modal-position: var(--background-position);
+  --user-modal-size: var(--background-size);
+  --user-modal-attachment: var(--background-attachment);
+  --user-modal-filter: saturate(calc(var(--saturation-factor, 1) * 1.15)) contrast(1.04) brightness(0.60);
+
+  /* HOME ICON */
+  --home-icon: url("https://clearvision.github.io/icons/discord.svg");
+  --home-size: cover;
+
+  /* FONTS */
+  --main-font: "gg sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --code-font: Consolas, "gg mono", "Liberation Mono", Menlo, Courier, monospace;
+
+  /* CHANNEL COLORS */
+  --channel-normal: #d7eaff;
+  --channel-muted: #8494aa;
+  --channel-hover: #ffffff;
+  --channel-selected: #ffffff;
+  --channel-selected-bg: linear-gradient(90deg, rgba(56, 207, 255, 0.50), rgba(138, 92, 255, 0.38));
+  --channel-unread: #62ddff;
+  --channel-unread-hover: #b49aff;
+
+  /* ACCESSIBILITY */
+  --focus-color: #38cfff;
+}
+
+/* =========================
+   CLEARVISION SHADING
+   ========================= */
+
+/* Works best with Discord set to Dark/Darker/Midnight. */
+:is(.theme-dark, .theme-light .theme-dark) {
+  --background-shading: rgba(3, 6, 18, 0.58);
+  --card-shading: rgba(8, 15, 35, 0.42);
+  --popout-shading: rgba(5, 10, 25, 0.74);
+  --modal-shading: rgba(3, 6, 18, 0.62);
+  --input-shading: rgba(255, 255, 255, 0.075);
+  --normal-text: #e7f7ff;
+  --muted-text: #a8b4c8;
+}
+
+:is(.theme-darker, .theme-light .theme-darker) {
+  --background-shading: rgba(3, 6, 18, 0.66);
+  --card-shading: rgba(8, 15, 35, 0.48);
+  --popout-shading: rgba(5, 10, 25, 0.78);
+  --modal-shading: rgba(3, 6, 18, 0.66);
+  --input-shading: rgba(255, 255, 255, 0.075);
+  --normal-text: #f0fbff;
+  --muted-text: #9faec8;
+}
+
+:is(.theme-midnight, .theme-light .theme-midnight) {
+  --background-shading: rgba(0, 2, 10, 0.76);
+  --card-shading: rgba(5, 10, 24, 0.52);
+  --popout-shading: rgba(2, 5, 15, 0.84);
+  --modal-shading: rgba(0, 2, 10, 0.72);
+  --input-shading: rgba(255, 255, 255, 0.07);
+  --normal-text: #f0fbff;
+  --muted-text: #9aa8bf;
+}
+
+/* Light theme fallback */
+:is(.theme-light, .theme-dark .theme-light) {
+  --background-shading: rgba(225, 245, 255, 0.34);
+  --card-shading: rgba(240, 250, 255, 0.42);
+  --popout-shading: rgba(240, 250, 255, 0.74);
+  --modal-shading: rgba(240, 250, 255, 0.64);
+  --input-shading: rgba(0, 20, 50, 0.16);
+  --normal-text: #142033;
+  --muted-text: #4f6076;
+}
+
+/* =========================
+   KAKASHI / RAIKIRI POLISH
+   ========================= */
+
+/* Discord visual refresh safety: force the background to actually appear */
+body,
+#app-mount,
+.app__160d8,
+.bg__960e4 {
+  background: transparent !important;
+}
+
+body::before,
+#app-mount::before,
+.bg__960e4 {
+  background-image: var(--background-image) !important;
+  background-position: var(--background-position) !important;
+  background-size: var(--background-size) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: var(--background-attachment) !important;
+}
+
+/* Cheap lightning aura overlay - glossy without heavy backdrop blur */
+#app-mount::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 28% 44%, rgba(56, 207, 255, 0.13), transparent 25%),
+    radial-gradient(circle at 70% 20%, rgba(138, 92, 255, 0.12), transparent 28%),
+    linear-gradient(135deg, rgba(0, 220, 255, 0.04), rgba(120, 70, 255, 0.05));
+}
+
+/* Keep app contents above the aura layer */
+#app-mount > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Glassy cards/panels without expensive backdrop-filter */
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .container__2637a,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .container__9293f,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .panels_c48ade,
+.visual-refresh .peopleColumn__133bf,
+.visual-refresh .container__37e49 {
+  border: 1px solid rgba(98, 221, 255, 0.14) !important;
+  box-shadow: 0 0 0 1px rgba(138, 92, 255, 0.05), 0 8px 28px rgba(0, 0, 0, 0.20) !important;
+}
+
+/* Rounded ClearVision style */
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .panels_c48ade,
+.visual-refresh .peopleColumn__133bf {
+  border-radius: 18px !important;
+}
+
+/* Selected channels / DMs */
+.visual-refresh .modeSelected__2ea32 .link__2ea32,
+.visual-refresh .modeSelected__2ea32:hover .link__2ea32,
+.visual-refresh .selected__91a9d .layout__91a9d,
+.visual-refresh .interactiveSelected__972a0,
+.visual-refresh .tabBarItem_b9fccc[aria-selected="true"] {
+  background: linear-gradient(90deg, rgba(56, 207, 255, 0.50), rgba(138, 92, 255, 0.34)) !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10) !important;
+}
+
+/* Hover states */
+.visual-refresh .link__2ea32:hover,
+.visual-refresh .layout__91a9d:hover,
+.visual-refresh .interactive__972a0:hover,
+.visual-refresh .tabBarItem_b9fccc:hover,
+.visual-refresh .item_b3f026:hover,
+.visual-refresh .button__201d5:hover {
+  background: rgba(56, 207, 255, 0.16) !important;
+}
+
+/* Text and accents */
+.visual-refresh .title__9293f,
+.visual-refresh .name__2ea32,
+.visual-refresh .username__0a06e,
+.visual-refresh .headerText_c19a55,
+.visual-refresh .messageContent_c19a55,
+.visual-refresh .membersGroup_c8ffbb,
+.visual-refresh .defaultColor__5345c {
+  color: var(--normal-text) !important;
+}
+
+.visual-refresh .username__0a06e,
+.visual-refresh .username_c19a55,
+.visual-refresh .name__2ea32,
+.visual-refresh .membersGroup_c8ffbb {
+  color: #62ddff !important;
+  font-weight: 700 !important;
+}
+
+/* Inputs */
+.visual-refresh .searchBar__97492,
+.visual-refresh .searchBarComponent__35e86,
+.visual-refresh .channelTextArea_f75fb0,
+.visual-refresh .themedBackground__74017,
+.visual-refresh .scrollableContainer__74017 {
+  background: rgba(5, 12, 30, 0.54) !important;
+  border: 1px solid rgba(98, 221, 255, 0.18) !important;
+  border-radius: 16px !important;
+}
+
+/* Buttons */
+.visual-refresh .lookFilled__201d5.colorBrand__201d5,
+.visual-refresh .lookFilled__201d5.colorPrimary__201d5 {
+  background: linear-gradient(135deg, #38cfff, #8a5cff) !important;
+  color: #ffffff !important;
+}
+
+/* Image preview/modal should not become a huge solid block */
+.visual-refresh .root__49fc1,
+.visual-refresh .modal__4f3da,
+.visual-refresh .modalRoot__4f3da,
+.visual-refresh .carouselModal_d3a6f0,
+.visual-refresh .imageModal__4f3da,
+.visual-refresh .modalCarouselWrapper_d3a6f0,
+.visual-refresh .modalContent__4f3da,
+.visual-refresh .content__49fc1,
+.visual-refresh .focusLock__49fc1 {
+  background: rgba(4, 8, 20, 0.18) !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.visual-refresh .backdrop__1a911,
+.visual-refresh .backdrop__78332,
+.visual-refresh .backdrop__7b89b,
+.backdrop__1a911,
+.backdrop__78332,
+.backdrop__7b89b {
+  background: rgba(0, 0, 0, 0.52) !important;
+  opacity: 1 !important;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(56, 207, 255, 0.85), rgba(138, 92, 255, 0.82)) !important;
+  border-radius: 999px !important;
+}
+
+/* Performance guardrails */
+*,
+*::before,
+*::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Optional tiny glow on unread indicators */
+.visual-refresh .unread__2ea32,
+.visual-refresh .item__58105 {
+  background-color: #38cfff !important;
+  box-shadow: 0 0 10px rgba(56, 207, 255, 0.55) !important;
+}
