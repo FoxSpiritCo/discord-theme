@@ -1,0 +1,1065 @@
+/**
+ * @name Core + Seli Kakashi Feature Stable
+ * @author Core + Seli
+ * @version 3.2.0
+ * @description Feature-restored transparent/glassy ClearVision-based Kakashi theme. Restores premium styling while avoiding broken scrolling/settings/layout hacks.
+ * @source https://github.com/ClearVision/ClearVision-v7
+ * @license Apache-2.0 ClearVision base imports; custom styling by Core + Seli.
+ */
+
+/* ClearVision V7 core only. Keep this simple. */
+@import url("https://clearvision.github.io/ClearVision-v7/main.css");
+@import url("https://clearvision.github.io/ClearVision-v7/betterdiscord.css");
+
+/* =========================================================
+   CONTROL PANEL
+   Safe variables only. No layout-breaking scroller hacks.
+   ========================================================= */
+
+:root {
+  /* Existing GitHub background image */
+  --core-bg: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/lewis-kakashi-bg.jpg?v=3");
+
+  /* Main colours */
+  --core-cyan: #38d8ff;
+  --core-cyan-soft: #91ecff;
+  --core-purple: #8a5cff;
+  --core-purple-soft: #b49aff;
+  --core-red: #ff3f6e;
+  --core-green: #43d18b;
+  --core-navy: #020611;
+
+  /* Safe performance values */
+  --core-radius-xl: 18px;
+  --core-radius-lg: 14px;
+  --core-radius-md: 10px;
+  --core-speed: 90ms ease;
+
+  /* Opacity / readability */
+  --core-bg-dim: rgba(0, 4, 16, 0.50);
+  --core-panel: rgba(4, 10, 24, 0.38);
+  --core-panel-strong: rgba(4, 10, 24, 0.62);
+  --core-popout: rgba(4, 10, 24, 0.78);
+  --core-input: rgba(255, 255, 255, 0.065);
+  --core-border: rgba(56, 216, 255, 0.22);
+
+  /* ClearVision variables */
+  --main-color: var(--core-cyan);
+  --hover-color: var(--core-purple);
+  --success-color: var(--core-green);
+  --danger-color: var(--core-red);
+
+  --online-color: var(--core-green);
+  --idle-color: #ffbf4d;
+  --dnd-color: var(--core-red);
+  --streaming-color: var(--core-purple);
+  --offline-color: #6e7685;
+
+  --background-image: var(--core-bg);
+  --background-position: center;
+  --background-size: cover;
+  --background-attachment: scroll;
+  --background-filter: none;
+  --background-shading-percent: 100%;
+
+  --user-popout-image: var(--background-image);
+  --user-popout-position: var(--background-position);
+  --user-popout-size: var(--background-size);
+  --user-popout-attachment: scroll;
+  --user-popout-filter: none;
+
+  --user-modal-image: var(--background-image);
+  --user-modal-position: var(--background-position);
+  --user-modal-size: var(--background-size);
+  --user-modal-attachment: scroll;
+  --user-modal-filter: none;
+
+  --home-icon: url("https://clearvision.github.io/icons/discord.svg");
+  --home-size: cover;
+
+  --main-font: "gg sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --code-font: Consolas, "gg mono", "Liberation Mono", Menlo, Courier, monospace;
+
+  --channel-normal: #d8edff;
+  --channel-muted: #8494aa;
+  --channel-hover: #ffffff;
+  --channel-selected: #ffffff;
+  --channel-selected-bg: linear-gradient(90deg, rgba(56,216,255,0.46), rgba(138,92,255,0.34));
+  --channel-unread: var(--core-cyan-soft);
+  --channel-unread-hover: var(--core-purple-soft);
+
+  --focus-color: var(--core-cyan);
+}
+
+/* =========================================================
+   CLEARVISION SHADING
+   ========================================================= */
+
+:is(.theme-dark, .theme-light .theme-dark) {
+  --background-shading: var(--core-bg-dim);
+  --card-shading: var(--core-panel);
+  --popout-shading: var(--core-popout);
+  --modal-shading: rgba(0, 4, 16, 0.70);
+  --input-shading: var(--core-input);
+  --normal-text: #e7f8ff;
+  --muted-text: #a4b2c8;
+}
+
+:is(.theme-darker, .theme-light .theme-darker) {
+  --background-shading: rgba(0, 4, 16, 0.58);
+  --card-shading: rgba(4, 10, 24, 0.44);
+  --popout-shading: rgba(4, 10, 24, 0.90);
+  --modal-shading: rgba(0, 4, 16, 0.74);
+  --input-shading: rgba(255, 255, 255, 0.08);
+  --normal-text: #f0fbff;
+  --muted-text: #9faec8;
+}
+
+:is(.theme-midnight, .theme-light .theme-midnight) {
+  --background-shading: rgba(0, 2, 10, 0.78);
+  --card-shading: rgba(4, 8, 20, 0.66);
+  --popout-shading: rgba(2, 5, 15, 0.92);
+  --modal-shading: rgba(0, 2, 10, 0.78);
+  --input-shading: rgba(255, 255, 255, 0.075);
+  --normal-text: #f4fcff;
+  --muted-text: #9aa8bf;
+}
+
+:is(.theme-light, .theme-dark .theme-light) {
+  --background-shading: rgba(220, 245, 255, 0.38);
+  --card-shading: rgba(240, 250, 255, 0.52);
+  --popout-shading: rgba(240, 250, 255, 0.84);
+  --modal-shading: rgba(240, 250, 255, 0.78);
+  --input-shading: rgba(0, 20, 50, 0.16);
+  --normal-text: #142033;
+  --muted-text: #4f6076;
+}
+
+/* =========================================================
+   GLOBAL SAFETY
+   These are the rules that stop the last broken version happening.
+   ========================================================= */
+
+/* Never do global overflow-visible on chat/scrollers. Never paint-contain messages. */
+.visual-refresh [data-list-id="chat-messages"],
+.visual-refresh ol[data-list-id="chat-messages"],
+.visual-refresh .scroller__36d07,
+.visual-refresh .scrollerInner__36d07,
+.visual-refresh .scroller__99e7c,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .content_f75fb0,
+.visual-refresh .chat_f75fb0 {
+  contain: none !important;
+  transform: none !important;
+  will-change: auto !important;
+}
+
+/* No backdrop blur. It looks nice but causes scroll jank. */
+*,
+*::before,
+*::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Background force fix, without touching scroll containers */
+body,
+#app-mount,
+.app__160d8,
+.bg__960e4 {
+  background: transparent !important;
+}
+
+#app-mount::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-image: var(--core-bg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+#app-mount::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(circle at 28% 44%, rgba(56,216,255,0.10), transparent 25%),
+    radial-gradient(circle at 70% 18%, rgba(138,92,255,0.10), transparent 28%),
+    linear-gradient(rgba(0,4,16,0.28), rgba(0,4,16,0.28));
+}
+
+#app-mount > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* =========================================================
+   PANELS / COLUMNS
+   ========================================================= */
+
+.visual-refresh .wrapper_ef3116,
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .container__2637a,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .container__9293f,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .panels_c48ade,
+.visual-refresh .peopleColumn__133bf,
+.visual-refresh .container_c8ffbb {
+  border: 1px solid var(--core-border) !important;
+  box-shadow: 0 0 8px rgba(56,216,255,0.055), inset 0 0 0 1px rgba(255,255,255,0.025) !important;
+}
+
+.visual-refresh .container__9293f,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .panels_c48ade,
+.visual-refresh .peopleColumn__133bf {
+  border-radius: var(--core-radius-xl) !important;
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.045), transparent 18%),
+    linear-gradient(135deg, rgba(56,216,255,0.028), rgba(138,92,255,0.024)) !important;
+}
+
+.visual-refresh .container__9293f {
+  margin: 0 8px 8px 8px;
+}
+
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf {
+  margin: 0 8px 8px 0;
+}
+
+.visual-refresh .panels_c48ade {
+  margin: 8px !important;
+}
+
+/* =========================================================
+   SETTINGS PAGE FIX
+   This is intentionally NOT transparent. Settings must be readable.
+   ========================================================= */
+
+.visual-refresh .standardSidebarView__23e6b,
+.visual-refresh .contentRegion__23e6b,
+.visual-refresh .contentRegionScroller__23e6b,
+.visual-refresh .sidebarRegionScroller__23e6b,
+.visual-refresh .layer__960e4,
+.visual-refresh .accountProfileCard__1fed1,
+.visual-refresh .background__1fed1,
+.visual-refresh .fieldList__1fed1 {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.045), rgba(138,92,255,0.035)),
+    rgba(4, 10, 24, 0.92) !important;
+}
+
+.visual-refresh .side_b3f026 .item_b3f026 {
+  border-radius: 999px !important;
+}
+
+.visual-refresh .side_b3f026 .item_b3f026:hover,
+.visual-refresh .side_b3f026 .themed_b3f026.selected_b3f026.item_b3f026 {
+  background: rgba(56,216,255,0.16) !important;
+}
+
+/* =========================================================
+   MESSAGE HOVER ACTION BAR SAFE FIX
+   This does NOT touch scroller overflow. It only lifts the hovered message
+   and the toolbar itself.
+   ========================================================= */
+
+.visual-refresh .messageListItem__5126c,
+.visual-refresh .message__5126c {
+  position: relative !important;
+  z-index: 1 !important;
+  contain: none !important;
+}
+
+.visual-refresh .messageListItem__5126c:hover,
+.visual-refresh .message__5126c:hover,
+.visual-refresh .message__5126c:focus-within {
+  z-index: 50 !important;
+}
+
+.visual-refresh .buttonContainer_c19a55,
+.visual-refresh .buttonContainer__5126c,
+.visual-refresh .buttons_c19a55,
+.visual-refresh .buttons__5126c,
+.visual-refresh .buttonsInner__5126c,
+.visual-refresh .container_f7ecac,
+.visual-refresh .wrapper_f7ecac,
+.visual-refresh .popoverReactionHoverBar_f84418 {
+  z-index: 5000 !important;
+  position: absolute !important;
+  pointer-events: auto !important;
+}
+
+/* Toolbar glass styling */
+.visual-refresh .wrapper_f7ecac,
+.visual-refresh .container_f7ecac,
+.visual-refresh .buttonsInner__5126c,
+.visual-refresh .popoverReactionHoverBar_f84418 {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.12), rgba(138,92,255,0.10)),
+    rgba(2,6,17,0.94) !important;
+  border: 1px solid rgba(56,216,255,0.24) !important;
+  border-radius: 999px !important;
+  box-shadow: 0 0 10px rgba(56,216,255,0.16), 0 8px 20px rgba(0,0,0,0.34) !important;
+}
+
+.visual-refresh .wrapper_f7ecac button,
+.visual-refresh .container_f7ecac button,
+.visual-refresh .buttonsInner__5126c button,
+.visual-refresh .popoverReactionHoverBar_f84418 button,
+.visual-refresh .wrapper_f7ecac [role="button"],
+.visual-refresh .container_f7ecac [role="button"] {
+  border-radius: 999px !important;
+  color: #dff8ff !important;
+}
+
+.visual-refresh .wrapper_f7ecac button:hover,
+.visual-refresh .container_f7ecac button:hover,
+.visual-refresh .buttonsInner__5126c button:hover,
+.visual-refresh .popoverReactionHoverBar_f84418 button:hover {
+  background: rgba(56,216,255,0.18) !important;
+}
+
+/* =========================================================
+   MESSAGES / REPLIES / MENTIONS
+   ========================================================= */
+
+.visual-refresh .message__5126c:hover {
+  background: linear-gradient(90deg, rgba(56,216,255,0.075), rgba(138,92,255,0.045), transparent) !important;
+  box-shadow: inset 2px 0 0 rgba(56,216,255,0.30) !important;
+  border-radius: var(--core-radius-md) !important;
+}
+
+.visual-refresh .mentioned__5126c {
+  background: linear-gradient(90deg, rgba(56,216,255,0.18), rgba(138,92,255,0.08), transparent) !important;
+  border-left: 3px solid var(--core-cyan) !important;
+}
+
+.visual-refresh .mentioned__5126c::before {
+  background: transparent !important;
+}
+
+.visual-refresh .repliedMessage_c19a55::before,
+.visual-refresh .replying__5126c::before {
+  border-color: rgba(56,216,255,0.50) !important;
+}
+
+.visual-refresh .replying__5126c {
+  background: linear-gradient(90deg, rgba(56,216,255,0.13), rgba(138,92,255,0.06), transparent) !important;
+}
+
+.visual-refresh .mention {
+  border-radius: 8px !important;
+  padding: 0 5px !important;
+  background: linear-gradient(135deg, rgba(56,216,255,0.24), rgba(138,92,255,0.18)) !important;
+  color: #fff !important;
+}
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+.visual-refresh .title__9293f,
+.visual-refresh .name__2ea32,
+.visual-refresh .username__0a06e,
+.visual-refresh .headerText_c19a55,
+.visual-refresh .messageContent_c19a55,
+.visual-refresh .membersGroup_c8ffbb,
+.visual-refresh .defaultColor__5345c,
+.visual-refresh .markup__75297 {
+  color: var(--normal-text) !important;
+}
+
+.visual-refresh .username__0a06e,
+.visual-refresh .username_c19a55,
+.visual-refresh .name__2ea32,
+.visual-refresh .membersGroup_c8ffbb {
+  color: var(--core-cyan-soft) !important;
+  font-weight: 700 !important;
+}
+
+.visual-refresh .muted__73245,
+.visual-refresh .subtext__972a0,
+.visual-refresh .timestamp_c19a55,
+.visual-refresh .description_ddd181 {
+  color: var(--muted-text) !important;
+}
+
+/* =========================================================
+   INPUTS / BUTTONS
+   ========================================================= */
+
+.visual-refresh .searchBar__97492,
+.visual-refresh .searchBarComponent__35e86,
+.visual-refresh .channelTextArea_f75fb0,
+.visual-refresh .themedBackground__74017,
+.visual-refresh .scrollableContainer__74017,
+.visual-refresh .inner_c0bea0,
+.visual-refresh .container__55c99 {
+  background: rgba(5, 12, 30, 0.60) !important;
+  border: 1px solid rgba(98,221,255,0.18) !important;
+  border-radius: var(--core-radius-lg) !important;
+}
+
+.visual-refresh .channelTextArea_f75fb0:focus-within,
+.visual-refresh .scrollableContainer__74017:focus-within,
+.visual-refresh .searchBar__97492:focus-within {
+  border-color: rgba(56,216,255,0.34) !important;
+  box-shadow: 0 0 8px rgba(56,216,255,0.12) !important;
+}
+
+.visual-refresh .lookFilled__201d5.colorBrand__201d5,
+.visual-refresh .lookFilled__201d5.colorPrimary__201d5 {
+  background: linear-gradient(135deg, var(--core-cyan), var(--core-purple)) !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+/* =========================================================
+   POPOUTS / MENUS / TOOLTIPS
+   ========================================================= */
+
+.visual-refresh .menu_c1e9c4,
+.visual-refresh .root__49fc1,
+.visual-refresh .userPopoutOuter_c69a7b,
+.visual-refresh .outer_c0bea0,
+.visual-refresh .contentWrapper__08434,
+.visual-refresh .contentWrapper_eab878,
+.visual-refresh .emojiPicker_c0e32c,
+.visual-refresh .container__53cea,
+.visual-refresh .container_dca174,
+.visual-refresh .tooltip__382e7,
+.visual-refresh .tooltipPrimary__382e7 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.01)),
+    var(--core-popout) !important;
+  border: 1px solid rgba(56,216,255,0.18) !important;
+  border-radius: var(--core-radius-xl) !important;
+  box-shadow: 0 0 12px rgba(56,216,255,0.10), 0 10px 30px rgba(0,0,0,0.32) !important;
+}
+
+.visual-refresh .colorDefault_c1e9c4.focused_c1e9c4,
+.visual-refresh .colorDefault_c1e9c4:active:not(.hideInteraction_c1e9c4),
+.visual-refresh .menu_c1e9c4 .item_c1e9c4:hover {
+  background: linear-gradient(90deg, rgba(56,216,255,0.22), rgba(138,92,255,0.14)) !important;
+  color: #ffffff !important;
+}
+
+.visual-refresh .menu_c1e9c4 .item_c1e9c4 {
+  border-radius: 10px !important;
+  margin: 2px 4px !important;
+}
+
+/* =========================================================
+   MEDIA / IMAGE MODAL
+   ========================================================= */
+
+.visual-refresh .modal__4f3da,
+.visual-refresh .modalRoot__4f3da,
+.visual-refresh .carouselModal_d3a6f0,
+.visual-refresh .imageModal__4f3da,
+.visual-refresh .modalCarouselWrapper_d3a6f0,
+.visual-refresh .modalContent__4f3da,
+.visual-refresh .content__49fc1,
+.visual-refresh .focusLock__49fc1 {
+  background: rgba(4, 8, 20, 0.10) !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.visual-refresh .backdrop__1a911,
+.visual-refresh .backdrop__78332,
+.visual-refresh .backdrop__7b89b,
+.backdrop__1a911,
+.backdrop__78332,
+.backdrop__7b89b {
+  background: rgba(0, 0, 0, 0.58) !important;
+  opacity: 1 !important;
+}
+
+.visual-refresh .imageWrapper_af017a,
+.visual-refresh .imageWrapper__178ee,
+.visual-refresh .embedMedia__623de,
+.visual-refresh .mediaAttachmentsContainer__242e2,
+.visual-refresh .mediaAttachmentsContainer__1d7b6 {
+  border-radius: var(--core-radius-lg) !important;
+  overflow: hidden !important;
+  box-shadow: 0 0 0 1px rgba(56,216,255,0.12), 0 8px 18px rgba(0,0,0,0.20) !important;
+}
+
+/* =========================================================
+   CODE BLOCKS / SHIKI
+   ========================================================= */
+
+.visual-refresh code,
+.visual-refresh .codeContainer__75297,
+.visual-refresh .markup__75297 pre,
+.visual-refresh .markup__75297 code,
+.hljs,
+.shiki,
+.shiki code,
+.vc-shiki-codeblock,
+.vc-shiki-codeblock pre,
+.vc-shiki-codeblock code {
+  background: rgba(1, 6, 16, 0.88) !important;
+  color: #dff8ff !important;
+  border: 1px solid rgba(56,216,255,0.22) !important;
+  border-radius: var(--core-radius-md) !important;
+  font-family: var(--code-font) !important;
+}
+
+/* =========================================================
+   VOICE / ACTIVITY / PLUGIN UI SAFE STYLING
+   ========================================================= */
+
+.visual-refresh .panels_c48ade::before {
+  content: "COMMS";
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: rgba(145,236,255,0.34);
+  pointer-events: none;
+}
+
+.visual-refresh .itemCard__7e549,
+.visual-refresh .peopleListItem_cc6179,
+.visual-refresh .activeNowOuter__7d20c,
+.visual-refresh .wrapper__00943,
+.visual-refresh .section__00943,
+.visual-refresh .searchResult__02a39,
+.visual-refresh .messageGroupWrapper__45690,
+.visual-refresh .container__6764b,
+.visual-refresh .channelRow_e4503a {
+  background: linear-gradient(135deg, rgba(56,216,255,0.05), rgba(138,92,255,0.035)), rgba(2,6,17,0.54) !important;
+  border: 1px solid rgba(56,216,255,0.14) !important;
+  border-radius: var(--core-radius-lg) !important;
+}
+
+/* Keep plugin UI styled, but do not use broad layout-changing rules */
+.vc-notification {
+  background: linear-gradient(135deg, rgba(56,216,255,0.12), rgba(138,92,255,0.08)), rgba(2,6,17,0.88) !important;
+  border: 1px solid rgba(56,216,255,0.22) !important;
+  color: #e7f8ff !important;
+  border-radius: 16px !important;
+}
+
+.vc-char-counter,
+.vc-character-counter,
+.vc-message-latency,
+.vc-membercount,
+.vc-member-count,
+.vc-server-info {
+  color: rgba(145,236,255,0.74) !important;
+}
+
+#oneko {
+  filter: drop-shadow(0 0 4px rgba(56,216,255,0.32)) !important;
+}
+
+/* =========================================================
+   SCROLLBARS / FINAL
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.12) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(56,216,255,0.90), rgba(138,92,255,0.86)) !important;
+  border: 3px solid transparent !important;
+  background-clip: padding-box !important;
+  border-radius: 999px !important;
+}
+
+::selection {
+  background: rgba(56,216,255,0.36);
+  color: #ffffff;
+}
+
+/* No infinite animations. No scroller overflow hacks. */
+.visual-refresh .scrollerInner__36d07,
+.visual-refresh .scroller__36d07,
+.visual-refresh .scroller__99e7c,
+.visual-refresh .members_c8ffbb,
+.visual-refresh .chatContent_f75fb0 {
+  animation: none !important;
+  transition: none !important;
+}
+
+
+/* =========================================================
+   CORE + SELI TRANSPARENCY RESTORE PATCH v3.1
+   =========================================================
+   This restores the glassy/translucent look WITHOUT using the dangerous
+   rules that broke Discord:
+   - no global overflow: visible on chat/scrollers
+   - no contain: paint on messages
+   - no fixed-position message hacks
+   - no broad [class*=...] selector spam
+*/
+
+/* More transparent columns/panels, but still readable */
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .container__2637a,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .peopleColumn__133bf,
+.visual-refresh .container_c8ffbb {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.050), transparent 18%),
+    linear-gradient(135deg, rgba(56,216,255,0.040), rgba(138,92,255,0.030)),
+    rgba(4, 10, 24, 0.34) !important;
+  border-color: rgba(56,216,255,0.20) !important;
+}
+
+/* Header and user panel slightly stronger so text/buttons stay readable */
+.visual-refresh .container__9293f,
+.visual-refresh .panels_c48ade {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.060), transparent 20%),
+    linear-gradient(135deg, rgba(56,216,255,0.050), rgba(138,92,255,0.040)),
+    rgba(4, 10, 24, 0.50) !important;
+}
+
+/* Message input: transparent but not invisible */
+.visual-refresh .channelTextArea_f75fb0,
+.visual-refresh .themedBackground__74017,
+.visual-refresh .scrollableContainer__74017 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.055), transparent),
+    rgba(4, 10, 24, 0.46) !important;
+}
+
+/* Popouts/menus keep a glass look, but not fully transparent */
+.visual-refresh .menu_c1e9c4,
+.visual-refresh .root__49fc1,
+.visual-refresh .userPopoutOuter_c69a7b,
+.visual-refresh .outer_c0bea0,
+.visual-refresh .contentWrapper__08434,
+.visual-refresh .contentWrapper_eab878,
+.visual-refresh .emojiPicker_c0e32c,
+.visual-refresh .container__53cea,
+.visual-refresh .container_dca174,
+.visual-refresh .tooltip__382e7,
+.visual-refresh .tooltipPrimary__382e7 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.012)),
+    rgba(4, 10, 24, 0.76) !important;
+}
+
+/* Settings must NOT be ultra-transparent; this was one of the broken complaints */
+.visual-refresh .standardSidebarView__23e6b,
+.visual-refresh .contentRegion__23e6b,
+.visual-refresh .contentRegionScroller__23e6b,
+.visual-refresh .sidebarRegionScroller__23e6b,
+.visual-refresh .accountProfileCard__1fed1,
+.visual-refresh .background__1fed1,
+.visual-refresh .fieldList__1fed1 {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.055), rgba(138,92,255,0.040)),
+    rgba(4, 10, 24, 0.86) !important;
+}
+
+/* Keep opened image/video preview transparent like you wanted */
+.visual-refresh .modal__4f3da,
+.visual-refresh .modalRoot__4f3da,
+.visual-refresh .carouselModal_d3a6f0,
+.visual-refresh .imageModal__4f3da,
+.visual-refresh .modalCarouselWrapper_d3a6f0,
+.visual-refresh .modalContent__4f3da,
+.visual-refresh .content__49fc1,
+.visual-refresh .focusLock__49fc1 {
+  background: rgba(4, 8, 20, 0.055) !important;
+}
+
+/* Restore a bit more glow, but keep it cheap */
+.visual-refresh .modeSelected__2ea32 .link__2ea32,
+.visual-refresh .modeSelected__2ea32:hover .link__2ea32,
+.visual-refresh .selected__91a9d .layout__91a9d,
+.visual-refresh .interactiveSelected__972a0,
+.visual-refresh .tabBarItem_b9fccc[aria-selected="true"] {
+  box-shadow:
+    0 0 10px rgba(56,216,255,0.18),
+    inset 0 0 0 1px rgba(255,255,255,0.10) !important;
+}
+
+/* Safe hover toolbar lift: no scroller overflow hacks */
+.visual-refresh .message__5126c:hover,
+.visual-refresh .message__5126c:focus-within {
+  z-index: 30 !important;
+}
+
+.visual-refresh .buttonContainer_c19a55,
+.visual-refresh .buttonContainer__5126c,
+.visual-refresh .buttons_c19a55,
+.visual-refresh .buttons__5126c,
+.visual-refresh .buttonsInner__5126c,
+.visual-refresh .container_f7ecac,
+.visual-refresh .wrapper_f7ecac,
+.visual-refresh .popoverReactionHoverBar_f84418 {
+  z-index: 2000 !important;
+}
+
+/* Absolute safety checks:
+   these override the specific broken rules from previous builds if cached/imported */
+.visual-refresh [data-list-id="chat-messages"],
+.visual-refresh ol[data-list-id="chat-messages"],
+.visual-refresh .scroller__36d07,
+.visual-refresh .scrollerInner__36d07,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .content_f75fb0,
+.visual-refresh .chat_f75fb0 {
+  overflow: hidden auto !important;
+  contain: none !important;
+}
+
+.visual-refresh .messageListItem__5126c,
+.visual-refresh .message__5126c {
+  contain: none !important;
+}
+
+
+/* =========================================================
+   CORE + SELI FEATURE RESTORE PATCH v3.2
+   =========================================================
+   Adds back the premium features that were removed too aggressively,
+   while avoiding the rules that broke Discord:
+   - no scroller overflow hacks
+   - no contain: paint on messages
+   - no huge broad [class*=] spam
+   - no infinite animations
+*/
+
+/* Personal Core + Seli HUD signature */
+.visual-refresh .container__9293f::before {
+  content: "CORE + SELI";
+  position: absolute;
+  right: 18px;
+  bottom: -13px;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(145, 236, 255, 0.42);
+  pointer-events: none;
+}
+
+/* More premium server/home icon */
+.visual-refresh .tutorialContainer__1f388 .childWrapper__6e9f8,
+.visual-refresh .childWrapper__6e9f8 {
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255,255,255,0.36), transparent 28%),
+    linear-gradient(135deg, var(--core-cyan), var(--core-purple)) !important;
+  border-radius: 38% !important;
+  box-shadow:
+    0 0 14px rgba(56,216,255,0.24),
+    0 0 24px rgba(138,92,255,0.14) !important;
+}
+
+.visual-refresh .wrapper__6e9f8.selected__6e9f8 .childWrapper__6e9f8 {
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,0.16),
+    0 0 18px rgba(56,216,255,0.42),
+    0 0 30px rgba(138,92,255,0.20) !important;
+}
+
+/* Better server folders */
+.visual-refresh .folder__48112,
+.visual-refresh .folderIconWrapper__48112 {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.20), rgba(138,92,255,0.16)),
+    rgba(4,10,24,0.38) !important;
+  border: 1px solid rgba(56,216,255,0.18) !important;
+  border-radius: 34% !important;
+}
+
+/* Selected channels / DMs: stronger premium glow but safe */
+.visual-refresh .modeSelected__2ea32 .link__2ea32,
+.visual-refresh .modeSelected__2ea32:hover .link__2ea32,
+.visual-refresh .selected__91a9d .layout__91a9d,
+.visual-refresh .interactiveSelected__972a0,
+.visual-refresh .tabBarItem_b9fccc[aria-selected="true"],
+.visual-refresh .side_b3f026 .themed_b3f026.selected_b3f026.item_b3f026,
+.visual-refresh .topPill_b3f026 .themed_b3f026.selected_b3f026.item_b3f026 {
+  background:
+    linear-gradient(90deg, rgba(56,216,255,0.52), rgba(138,92,255,0.38)) !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  box-shadow:
+    0 0 12px rgba(56,216,255,0.20),
+    inset 0 0 0 1px rgba(255,255,255,0.11) !important;
+}
+
+/* Unread/mention lightning indicators */
+.visual-refresh .unread__2ea32,
+.visual-refresh .item__58105 {
+  background-color: var(--core-cyan) !important;
+  box-shadow: 0 0 8px rgba(56,216,255,0.48) !important;
+}
+
+.visual-refresh .unreadRelevant__2ea32 .name__2ea32,
+.visual-refresh .modeUnreadImportant__2ea32 .name__2ea32 {
+  color: var(--core-cyan-soft) !important;
+}
+
+/* Attachment/embed premium cards */
+.visual-refresh .attachment__4cfe2,
+.visual-refresh .messageAttachment__5dae1,
+.visual-refresh .embedFull__623de,
+.visual-refresh .embed__623de,
+.visual-refresh .container_a8e786 {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.060), rgba(138,92,255,0.050)),
+    rgba(2,6,17,0.42) !important;
+  border: 1px solid rgba(56,216,255,0.18) !important;
+  border-radius: var(--core-radius-lg) !important;
+}
+
+/* Profile cards / popouts: restore cyber card look */
+.visual-refresh .userPopoutOuter_c69a7b,
+.visual-refresh .outer_c0bea0 {
+  background:
+    radial-gradient(circle at 25% 8%, rgba(56,216,255,0.14), transparent 32%),
+    radial-gradient(circle at 80% 0%, rgba(138,92,255,0.12), transparent 30%),
+    rgba(2,6,17,0.78) !important;
+  border: 1px solid rgba(56,216,255,0.20) !important;
+}
+
+.visual-refresh .banner__68edb,
+.visual-refresh .banner_c3e427 {
+  box-shadow: inset 0 -40px 70px rgba(2,6,17,0.46) !important;
+}
+
+/* Friend/activity cards */
+.visual-refresh .itemCard__7e549,
+.visual-refresh .peopleListItem_cc6179,
+.visual-refresh .activeNowOuter__7d20c,
+.visual-refresh .wrapper__00943,
+.visual-refresh .section__00943 {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.060), rgba(138,92,255,0.040)),
+    rgba(2,6,17,0.42) !important;
+  border: 1px solid rgba(56,216,255,0.15) !important;
+  border-radius: var(--core-radius-lg) !important;
+}
+
+/* Voice/call HUD polish */
+.visual-refresh .callContainer_cb9592,
+.visual-refresh .wrapper_cb9592,
+.visual-refresh .root_bfe55a,
+.visual-refresh .container__37e49,
+.visual-refresh .panels_c48ade {
+  background:
+    linear-gradient(180deg, rgba(56,216,255,0.075), rgba(138,92,255,0.030)),
+    rgba(4,10,24,0.48) !important;
+}
+
+.visual-refresh .buttonColor_e131a9,
+.visual-refresh .button__67645 {
+  background: rgba(56,216,255,0.13) !important;
+  color: #e7f8ff !important;
+  border-radius: 999px !important;
+}
+
+.visual-refresh .buttonColor_e131a9:hover,
+.visual-refresh .button__67645:hover {
+  background: rgba(56,216,255,0.22) !important;
+}
+
+/* Call / stream tiles */
+.visual-refresh .tile__2f4f7,
+.visual-refresh .tile__90dc5,
+.visual-refresh .root_bfe55a video,
+.visual-refresh .video__4d3a9 {
+  border-radius: var(--core-radius-lg) !important;
+  box-shadow:
+    0 0 0 1px rgba(56,216,255,0.16),
+    0 10px 26px rgba(0,0,0,0.24) !important;
+}
+
+/* Context menus: stronger hover polish */
+.visual-refresh .separator_c1e9c4 {
+  border-color: rgba(56,216,255,0.14) !important;
+}
+
+.visual-refresh .menu_c1e9c4 .item_c1e9c4 {
+  transition: background 90ms ease, color 90ms ease !important;
+}
+
+/* Code blocks: better terminal vibe */
+.visual-refresh .markup__75297 pre,
+.visual-refresh .codeContainer__75297,
+.vc-shiki-codeblock,
+.shiki {
+  box-shadow:
+    inset 0 0 0 1px rgba(138,92,255,0.08),
+    0 0 14px rgba(56,216,255,0.060) !important;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-title {
+  color: #65e4ff !important;
+}
+
+.hljs-string,
+.hljs-attr {
+  color: #b49aff !important;
+}
+
+.hljs-comment {
+  color: #6f8096 !important;
+}
+
+/* Vencord plugin visual compatibility, targeted only */
+.vc-membercount,
+.vc-member-count,
+.vc-server-info,
+.vc-message-latency,
+.vc-char-counter,
+.vc-character-counter,
+.vc-platform-indicator,
+.vc-user-voice-show,
+.vc-show-connections {
+  color: rgba(145,236,255,0.78) !important;
+}
+
+.vc-membercount,
+.vc-member-count,
+.vc-server-info {
+  background: rgba(2,6,17,0.35) !important;
+  border: 1px solid rgba(56,216,255,0.14) !important;
+  border-radius: 999px !important;
+  padding: 2px 8px !important;
+}
+
+.vc-preview-message,
+.vc-relationship-notifier,
+.vc-reviewdb,
+.vc-rdb {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.08), rgba(138,92,255,0.06)),
+    rgba(2,6,17,0.68) !important;
+  border: 1px solid rgba(56,216,255,0.18) !important;
+  border-radius: 14px !important;
+}
+
+/* Reactions / quick reactions */
+.visual-refresh .reaction__23977 {
+  background: rgba(56,216,255,0.08) !important;
+  border: 1px solid rgba(56,216,255,0.12) !important;
+  border-radius: 999px !important;
+}
+
+.visual-refresh .reaction__23977:hover {
+  background: rgba(56,216,255,0.18) !important;
+}
+
+/* Spotify controls if visible */
+.vc-spotify-button,
+.vc-spotify-button-row,
+.vc-spotify-progress,
+.vc-spotify-album-image {
+  border-radius: 12px !important;
+}
+
+.vc-spotify-button:hover {
+  background: rgba(56,216,255,0.15) !important;
+}
+
+/* Better upload/chat buttons */
+.visual-refresh .attachButton__0923f,
+.visual-refresh .attachButtonInner__0923f,
+.visual-refresh .buttons__74017 button,
+.visual-refresh .buttonContainer__74017 button {
+  color: var(--core-cyan-soft) !important;
+  border-radius: 12px !important;
+}
+
+.visual-refresh .attachButton__0923f:hover,
+.visual-refresh .buttons__74017 button:hover {
+  background: rgba(56,216,255,0.12) !important;
+}
+
+/* On-screen plugin notifications */
+.vc-notification {
+  box-shadow:
+    0 0 18px rgba(56,216,255,0.14),
+    0 12px 32px rgba(0,0,0,0.34) !important;
+}
+
+/* Keep oneko styled but lightweight */
+#oneko {
+  filter:
+    drop-shadow(0 0 4px rgba(56,216,255,0.32))
+    drop-shadow(0 0 7px rgba(138,92,255,0.16)) !important;
+}
+
+/* Premium top chat electric line, safe because it doesn't affect scroll layout */
+.visual-refresh .chat_f75fb0::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56,216,255,0.48), rgba(138,92,255,0.34), transparent);
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Small COMMS label in user panel */
+.visual-refresh .panels_c48ade::before {
+  content: "COMMS";
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: rgba(145,236,255,0.34);
+  pointer-events: none;
+}
+
+/* Final safety: keep settings readable even after transparency restoration */
+.visual-refresh .standardSidebarView__23e6b,
+.visual-refresh .contentRegion__23e6b,
+.visual-refresh .contentRegionScroller__23e6b,
+.visual-refresh .sidebarRegionScroller__23e6b {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.055), rgba(138,92,255,0.040)),
+    rgba(4,10,24,0.88) !important;
+}
+
+/* Final safety: never alter chat scroller overflow */
+.visual-refresh [data-list-id="chat-messages"],
+.visual-refresh ol[data-list-id="chat-messages"],
+.visual-refresh .scroller__36d07,
+.visual-refresh .scrollerInner__36d07 {
+  contain: none !important;
+  transform: none !important;
+  will-change: auto !important;
+}
