@@ -1,0 +1,1542 @@
+/**
+ * @name Core + Seli Kakashi Ultra
+ * @author Core + Seli
+ * @version 2.4.0
+ * @description Ultra-polished ClearVision V7-based Kakashi/Raikiri theme for Vencord/BetterDiscord. Adds lightning glow, media modal fixes, context menus, voice HUD, code blocks, popouts, and tweakable performance variables.
+ * @source https://github.com/ClearVision/ClearVision-v7
+ * @license Apache-2.0 ClearVision base imports; custom styling by Core + Seli.
+ */
+
+/* ClearVision V7 core */
+@import url("https://clearvision.github.io/ClearVision-v7/main.css");
+@import url("https://clearvision.github.io/ClearVision-v7/betterdiscord.css");
+
+/* =========================
+   CORE + SELI SETTINGS
+   ========================= */
+
+:root {
+  /* FPS NOTE:
+     CSS cannot raise Discord/Chromium's FPS cap.
+     This theme is tuned for high-refresh displays by avoiding global blur/backdrop-filter
+     while keeping strong limited glows/gradients.
+  */
+
+  /* TWEAKABLE PERFORMANCE / LOOK VARIABLES */
+  --kaka-bg-url: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/lewis-kakashi-bg.jpg?v=2");
+  --kaka-bg-darkness: 0.62;
+  --kaka-panel-opacity: 0.48;
+  --kaka-popout-opacity: 0.78;
+  --kaka-modal-opacity: 0.62;
+  --kaka-input-opacity: 0.13;
+  --kaka-glow-strength: 0.62;
+  --kaka-radius-xl: 20px;
+  --kaka-radius-lg: 16px;
+  --kaka-radius-md: 12px;
+  --kaka-speed: 140ms ease;
+
+  /* ACCENT COLORS */
+  --main-color: #38d8ff;
+  --hover-color: #8a5cff;
+  --success-color: #43d18b;
+  --danger-color: #ff3f6e;
+
+  /* Extra theme palette */
+  --kaka-cyan: #38d8ff;
+  --kaka-cyan-soft: #91ecff;
+  --kaka-purple: #8a5cff;
+  --kaka-purple-soft: #b49aff;
+  --kaka-red: #ff3f6e;
+  --kaka-navy: #050b18;
+  --kaka-card: rgba(5, 11, 24, var(--kaka-panel-opacity));
+  --kaka-card-strong: rgba(4, 8, 20, 0.68);
+  --kaka-border: rgba(56, 216, 255, 0.18);
+  --kaka-border-purple: rgba(138, 92, 255, 0.22);
+
+  /* STATUS COLORS */
+  --online-color: #43d18b;
+  --idle-color: #ffbf4d;
+  --dnd-color: #ff3f6e;
+  --streaming-color: #8a5cff;
+  --offline-color: #6e7685;
+
+  /* CLEARVISION APP BACKGROUND */
+  --background-shading-percent: 100%;
+  --background-image: var(--kaka-bg-url);
+  --background-position: center;
+  --background-size: cover;
+  --background-attachment: fixed;
+  --background-filter: saturate(calc(var(--saturation-factor, 1) * 1.20)) contrast(1.08) brightness(0.78);
+
+  /* USER POPOUT BACKGROUND */
+  --user-popout-image: var(--background-image);
+  --user-popout-position: var(--background-position);
+  --user-popout-size: var(--background-size);
+  --user-popout-attachment: var(--background-attachment);
+  --user-popout-filter: saturate(calc(var(--saturation-factor, 1) * 1.18)) contrast(1.05) brightness(0.62);
+
+  /* USER MODAL BACKGROUND */
+  --user-modal-image: var(--background-image);
+  --user-modal-position: var(--background-position);
+  --user-modal-size: var(--background-size);
+  --user-modal-attachment: var(--background-attachment);
+  --user-modal-filter: saturate(calc(var(--saturation-factor, 1) * 1.15)) contrast(1.05) brightness(0.58);
+
+  /* HOME ICON */
+  --home-icon: url("https://clearvision.github.io/icons/discord.svg");
+  --home-size: cover;
+
+  /* FONTS */
+  --main-font: "gg sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --code-font: Consolas, "gg mono", "Liberation Mono", Menlo, Courier, monospace;
+
+  /* CHANNEL COLORS */
+  --channel-normal: #d8edff;
+  --channel-muted: #8494aa;
+  --channel-hover: #ffffff;
+  --channel-selected: #ffffff;
+  --channel-selected-bg: linear-gradient(90deg, rgba(56, 216, 255, 0.55), rgba(138, 92, 255, 0.42));
+  --channel-unread: #65e4ff;
+  --channel-unread-hover: #c0aaff;
+
+  /* ACCESSIBILITY */
+  --focus-color: #38d8ff;
+}
+
+/* =========================
+   CLEARVISION THEME SHADING
+   ========================= */
+
+:is(.theme-dark, .theme-light .theme-dark) {
+  --background-shading: rgba(0, 3, 12, var(--kaka-bg-darkness));
+  --card-shading: rgba(5, 11, 24, var(--kaka-panel-opacity));
+  --popout-shading: rgba(4, 8, 20, var(--kaka-popout-opacity));
+  --modal-shading: rgba(0, 3, 12, var(--kaka-modal-opacity));
+  --input-shading: rgba(255, 255, 255, var(--kaka-input-opacity));
+  --normal-text: #e7f8ff;
+  --muted-text: #a4b2c8;
+}
+
+:is(.theme-darker, .theme-light .theme-darker) {
+  --background-shading: rgba(0, 3, 12, 0.70);
+  --card-shading: rgba(5, 11, 24, 0.54);
+  --popout-shading: rgba(4, 8, 20, 0.82);
+  --modal-shading: rgba(0, 3, 12, 0.68);
+  --input-shading: rgba(255, 255, 255, 0.085);
+  --normal-text: #f0fbff;
+  --muted-text: #9faec8;
+}
+
+:is(.theme-midnight, .theme-light .theme-midnight) {
+  --background-shading: rgba(0, 2, 10, 0.78);
+  --card-shading: rgba(4, 8, 20, 0.58);
+  --popout-shading: rgba(2, 5, 15, 0.86);
+  --modal-shading: rgba(0, 2, 10, 0.74);
+  --input-shading: rgba(255, 255, 255, 0.075);
+  --normal-text: #f4fcff;
+  --muted-text: #9aa8bf;
+}
+
+:is(.theme-light, .theme-dark .theme-light) {
+  --background-shading: rgba(220, 245, 255, 0.36);
+  --card-shading: rgba(240, 250, 255, 0.48);
+  --popout-shading: rgba(240, 250, 255, 0.78);
+  --modal-shading: rgba(240, 250, 255, 0.66);
+  --input-shading: rgba(0, 20, 50, 0.16);
+  --normal-text: #142033;
+  --muted-text: #4f6076;
+}
+
+/* =========================
+   HIGH FPS GUARDRAILS
+   ========================= */
+
+*,
+*::before,
+*::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+.visual-refresh .message__5126c,
+.visual-refresh .link__2ea32,
+.visual-refresh .layout__91a9d,
+.visual-refresh .interactive__972a0,
+.visual-refresh .tabBarItem_b9fccc,
+.visual-refresh .button__201d5,
+.visual-refresh .item_b3f026,
+.visual-refresh .menu_c1e9c4 .item_c1e9c4 {
+  transition:
+    background var(--kaka-speed),
+    border-color var(--kaka-speed),
+    color var(--kaka-speed),
+    box-shadow var(--kaka-speed),
+    transform var(--kaka-speed) !important;
+}
+
+/* =========================
+   BACKGROUND FORCE FIX
+   ========================= */
+
+body,
+#app-mount,
+.app__160d8,
+.bg__960e4 {
+  background: transparent !important;
+}
+
+body::before,
+#app-mount::before,
+.bg__960e4 {
+  background-image: var(--background-image) !important;
+  background-position: var(--background-position) !important;
+  background-size: var(--background-size) !important;
+  background-repeat: no-repeat !important;
+  background-attachment: var(--background-attachment) !important;
+}
+
+#app-mount::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  filter: var(--background-filter);
+}
+
+#app-mount > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Lightning aura overlay: cheap gradients only */
+#app-mount::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(circle at 28% 44%, rgba(56, 216, 255, 0.15), transparent 25%),
+    radial-gradient(circle at 70% 18%, rgba(138, 92, 255, 0.15), transparent 28%),
+    radial-gradient(circle at 50% 90%, rgba(56, 216, 255, 0.06), transparent 30%),
+    linear-gradient(135deg, rgba(0, 220, 255, 0.035), rgba(120, 70, 255, 0.045));
+}
+
+/* =========================
+   PANEL / COLUMN GLASS
+   ========================= */
+
+.visual-refresh .wrapper_ef3116,
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .container__2637a,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .container__9293f,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .panels_c48ade,
+.visual-refresh .peopleColumn__133bf,
+.visual-refresh .container__37e49,
+.visual-refresh .container_c8ffbb {
+  border: 1px solid var(--kaka-border) !important;
+  box-shadow:
+    0 0 calc(14px * var(--kaka-glow-strength)) rgba(56, 216, 255, 0.09),
+    0 0 calc(22px * var(--kaka-glow-strength)) rgba(138, 92, 255, 0.06),
+    inset 0 0 0 1px rgba(255,255,255,0.035) !important;
+}
+
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .panels_c48ade,
+.visual-refresh .peopleColumn__133bf,
+.visual-refresh .container__9293f {
+  border-radius: var(--kaka-radius-xl) !important;
+}
+
+.visual-refresh .container__9293f {
+  margin: 0 8px 8px 8px;
+}
+
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf {
+  margin: 0 8px 8px 0;
+}
+
+.visual-refresh .panels_c48ade {
+  margin: 8px !important;
+}
+
+/* Subtle glossy highlights */
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .container__9293f,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .panels_c48ade {
+  background-image:
+    linear-gradient(180deg, rgba(255,255,255,0.055), transparent 18%),
+    linear-gradient(135deg, rgba(56,216,255,0.035), rgba(138,92,255,0.028)) !important;
+}
+
+/* =========================
+   CHANNELS / DMS / UNREAD / MENTIONS
+   ========================= */
+
+.visual-refresh .modeSelected__2ea32 .link__2ea32,
+.visual-refresh .modeSelected__2ea32:hover .link__2ea32,
+.visual-refresh .selected__91a9d .layout__91a9d,
+.visual-refresh .interactiveSelected__972a0,
+.visual-refresh .tabBarItem_b9fccc[aria-selected="true"],
+.visual-refresh .side_b3f026 .themed_b3f026.selected_b3f026.item_b3f026,
+.visual-refresh .topPill_b3f026 .themed_b3f026.selected_b3f026.item_b3f026 {
+  background: linear-gradient(90deg, rgba(56, 216, 255, 0.58), rgba(138, 92, 255, 0.42)) !important;
+  color: #ffffff !important;
+  border-radius: 999px !important;
+  box-shadow:
+    0 0 calc(16px * var(--kaka-glow-strength)) rgba(56, 216, 255, 0.25),
+    inset 0 0 0 1px rgba(255,255,255,0.11) !important;
+}
+
+.visual-refresh .link__2ea32:hover,
+.visual-refresh .layout__91a9d:hover,
+.visual-refresh .interactive__972a0:hover,
+.visual-refresh .tabBarItem_b9fccc:hover,
+.visual-refresh .item_b3f026:hover,
+.visual-refresh .button__201d5:hover {
+  background: rgba(56, 216, 255, 0.16) !important;
+}
+
+.visual-refresh .unread__2ea32,
+.visual-refresh .item__58105 {
+  background-color: var(--kaka-cyan) !important;
+  box-shadow: 0 0 calc(12px * var(--kaka-glow-strength)) rgba(56, 216, 255, 0.66) !important;
+}
+
+.visual-refresh .mentioned__5126c {
+  background: linear-gradient(90deg, rgba(56,216,255,0.20), rgba(138,92,255,0.10), transparent) !important;
+  border-left: 3px solid var(--kaka-cyan) !important;
+  box-shadow: inset 0 0 0 1px rgba(56,216,255,0.08) !important;
+}
+
+.visual-refresh .mentioned__5126c::before {
+  background: transparent !important;
+}
+
+/* =========================
+   TEXT / NAMES
+   ========================= */
+
+.visual-refresh .title__9293f,
+.visual-refresh .name__2ea32,
+.visual-refresh .username__0a06e,
+.visual-refresh .headerText_c19a55,
+.visual-refresh .messageContent_c19a55,
+.visual-refresh .membersGroup_c8ffbb,
+.visual-refresh .defaultColor__5345c,
+.visual-refresh .markup__75297 {
+  color: var(--normal-text) !important;
+}
+
+.visual-refresh .username__0a06e,
+.visual-refresh .username_c19a55,
+.visual-refresh .name__2ea32,
+.visual-refresh .membersGroup_c8ffbb {
+  color: var(--kaka-cyan-soft) !important;
+  font-weight: 700 !important;
+}
+
+.visual-refresh .muted__73245,
+.visual-refresh .subtext__972a0,
+.visual-refresh .timestamp_c19a55,
+.visual-refresh .description_ddd181 {
+  color: var(--muted-text) !important;
+}
+
+/* =========================
+   SEARCH / MESSAGE INPUTS
+   ========================= */
+
+.visual-refresh .searchBar__97492,
+.visual-refresh .searchBarComponent__35e86,
+.visual-refresh .channelTextArea_f75fb0,
+.visual-refresh .themedBackground__74017,
+.visual-refresh .scrollableContainer__74017,
+.visual-refresh .inner_c0bea0,
+.visual-refresh .container__55c99 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.01)),
+    rgba(5, 12, 30, 0.56) !important;
+  border: 1px solid rgba(98, 221, 255, 0.20) !important;
+  border-radius: var(--kaka-radius-lg) !important;
+  box-shadow: inset 0 0 0 1px rgba(255,255,255,0.035) !important;
+}
+
+.visual-refresh .channelTextArea_f75fb0:focus-within,
+.visual-refresh .scrollableContainer__74017:focus-within,
+.visual-refresh .searchBar__97492:focus-within {
+  border-color: rgba(56, 216, 255, 0.44) !important;
+  box-shadow: 0 0 calc(14px * var(--kaka-glow-strength)) rgba(56,216,255,0.18) !important;
+}
+
+/* =========================
+   BUTTONS / BADGES / PILLS
+   ========================= */
+
+.visual-refresh .lookFilled__201d5.colorBrand__201d5,
+.visual-refresh .lookFilled__201d5.colorPrimary__201d5 {
+  background: linear-gradient(135deg, var(--kaka-cyan), var(--kaka-purple)) !important;
+  color: #ffffff !important;
+  border: none !important;
+  box-shadow: 0 0 calc(18px * var(--kaka-glow-strength)) rgba(56,216,255,0.20) !important;
+}
+
+.visual-refresh .lookFilled__201d5.colorBrand__201d5:hover,
+.visual-refresh .lookFilled__201d5.colorPrimary__201d5:hover {
+  background: linear-gradient(135deg, var(--kaka-purple), var(--kaka-cyan)) !important;
+  transform: translateY(-1px);
+}
+
+.visual-refresh .numberBadge__2b1f5,
+.visual-refresh .newBadge__4ed1a,
+.visual-refresh .botTagRegular__82f07,
+.visual-refresh .mention,
+.visual-refresh .barFill__001a7 {
+  background: linear-gradient(135deg, var(--kaka-cyan), var(--kaka-purple)) !important;
+  color: white !important;
+}
+
+/* =========================
+   CONTEXT MENUS / POPOUTS / TOOLTIPS
+   ========================= */
+
+.visual-refresh .menu_c1e9c4,
+.visual-refresh .root__49fc1,
+.visual-refresh .userPopoutOuter_c69a7b,
+.visual-refresh .outer_c0bea0,
+.visual-refresh .contentWrapper__08434,
+.visual-refresh .contentWrapper_eab878,
+.visual-refresh .emojiPicker_c0e32c,
+.visual-refresh .container__53cea,
+.visual-refresh .container_dca174,
+.visual-refresh .accountProfileCard__1fed1,
+.visual-refresh .background__1fed1,
+.visual-refresh .fieldList__1fed1,
+.visual-refresh .tooltip__382e7,
+.visual-refresh .tooltipPrimary__382e7 {
+  background:
+    linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015)),
+    rgba(4, 8, 20, 0.86) !important;
+  border: 1px solid rgba(56, 216, 255, 0.20) !important;
+  border-radius: var(--kaka-radius-xl) !important;
+  box-shadow:
+    0 0 calc(26px * var(--kaka-glow-strength)) rgba(56,216,255,0.14),
+    0 16px 44px rgba(0,0,0,0.35) !important;
+}
+
+.visual-refresh .colorDefault_c1e9c4.focused_c1e9c4,
+.visual-refresh .colorDefault_c1e9c4:active:not(.hideInteraction_c1e9c4),
+.visual-refresh .menu_c1e9c4 .item_c1e9c4:hover {
+  background: linear-gradient(90deg, rgba(56,216,255,0.24), rgba(138,92,255,0.16)) !important;
+  color: #ffffff !important;
+}
+
+.visual-refresh .separator_c1e9c4 {
+  border-color: rgba(56,216,255,0.14) !important;
+}
+
+/* User popout extra polish */
+.visual-refresh .userPopoutOuter_c69a7b::before,
+.visual-refresh .outer_c0bea0::before {
+  background: radial-gradient(circle at top left, rgba(56,216,255,0.18), transparent 35%) !important;
+}
+
+/* =========================
+   CODE BLOCKS / TERMINAL LOOK
+   ========================= */
+
+.visual-refresh code,
+.visual-refresh .codeContainer__75297,
+.visual-refresh .markup__75297 pre,
+.visual-refresh .markup__75297 code,
+.hljs {
+  background: rgba(1, 6, 16, 0.84) !important;
+  color: #dff8ff !important;
+  border: 1px solid rgba(56,216,255,0.24) !important;
+  border-radius: var(--kaka-radius-md) !important;
+  font-family: var(--code-font) !important;
+}
+
+.visual-refresh .markup__75297 pre {
+  box-shadow: inset 0 0 0 1px rgba(138,92,255,0.08), 0 0 20px rgba(56,216,255,0.08) !important;
+}
+
+.hljs-keyword,
+.hljs-selector-tag,
+.hljs-title {
+  color: #65e4ff !important;
+}
+
+.hljs-string,
+.hljs-attr {
+  color: #b49aff !important;
+}
+
+.hljs-comment {
+  color: #6f8096 !important;
+}
+
+/* =========================
+   VOICE / CALL HUD
+   ========================= */
+
+.visual-refresh .callContainer_cb9592,
+.visual-refresh .wrapper_cb9592,
+.visual-refresh .root_bfe55a,
+.visual-refresh .container__37e49,
+.visual-refresh .panels_c48ade {
+  background:
+    linear-gradient(180deg, rgba(56,216,255,0.08), rgba(138,92,255,0.035)),
+    rgba(4, 8, 20, 0.70) !important;
+}
+
+.visual-refresh .voiceButtonsContainer_e131a9 button,
+.visual-refresh .button_e131a9,
+.visual-refresh .actionButtons_e131a9 button,
+.visual-refresh .buttonSection__37e49 button {
+  border-radius: 999px !important;
+}
+
+.visual-refresh .buttonColor_e131a9,
+.visual-refresh .button__67645 {
+  background: rgba(56,216,255,0.14) !important;
+  color: #e7f8ff !important;
+}
+
+.visual-refresh .buttonColor_e131a9:hover,
+.visual-refresh .button__67645:hover {
+  background: rgba(56,216,255,0.24) !important;
+}
+
+.visual-refresh .disconnect_f1ceac,
+.visual-refresh .button_e131a9[aria-label*="Disconnect"],
+.visual-refresh .button_e131a9[aria-label*="Leave"] {
+  background: rgba(255,63,110,0.24) !important;
+  color: #fff !important;
+}
+
+/* =========================
+   MEDIA / IMAGE PREVIEW MODAL
+   ========================= */
+
+.visual-refresh .layer__960e4 .root__49fc1,
+.visual-refresh .root__49fc1,
+.visual-refresh .modal__4f3da,
+.visual-refresh .modalRoot__4f3da,
+.visual-refresh .carouselModal_d3a6f0,
+.visual-refresh .imageModal__4f3da,
+.visual-refresh .modalCarouselWrapper_d3a6f0,
+.visual-refresh .wrapper_cb9592,
+.visual-refresh .modalContent__4f3da,
+.visual-refresh .content__49fc1,
+.visual-refresh .focusLock__49fc1 {
+  background: rgba(4, 8, 20, 0.12) !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+.visual-refresh .backdrop__1a911,
+.visual-refresh .backdrop__78332,
+.visual-refresh .backdrop__7b89b,
+.backdrop__1a911,
+.backdrop__78332,
+.backdrop__7b89b {
+  background: rgba(0, 0, 0, 0.58) !important;
+  opacity: 1 !important;
+}
+
+.visual-refresh .imageWrapper_af017a,
+.visual-refresh .imageWrapper__178ee,
+.visual-refresh .mediaAttachmentsContainer__242e2,
+.visual-refresh .mediaAttachmentsContainer__1d7b6,
+.visual-refresh .mediaView__4f3da,
+.visual-refresh .wrapper__4f3da {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.visual-refresh .image__4f3da,
+.visual-refresh .image_af017a,
+.visual-refresh .imageWrapper_af017a img,
+.visual-refresh .imageWrapper__178ee img,
+.visual-refresh .mediaAttachmentsContainer__242e2 img {
+  background: transparent !important;
+  border-radius: var(--kaka-radius-lg) !important;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.38), 0 0 28px rgba(56,216,255,0.10) !important;
+}
+
+/* =========================
+   HOME / SERVER LIST / AVATARS
+   ========================= */
+
+.visual-refresh .wrapper__6e9f8 foreignObject,
+.visual-refresh .folderIconWrapper__48112 {
+  border-radius: 34% !important;
+}
+
+.visual-refresh .childWrapper__6e9f8 {
+  background: linear-gradient(135deg, rgba(56,216,255,0.92), rgba(138,92,255,0.86)) !important;
+  color: #ffffff !important;
+  border-radius: 38% !important;
+  box-shadow: 0 0 calc(16px * var(--kaka-glow-strength)) rgba(56,216,255,0.28) !important;
+}
+
+.visual-refresh .avatar__44b0c,
+.visual-refresh .wrapper__44b0c {
+  border-radius: 32% !important;
+}
+
+.visual-refresh .avatarSpeaking__07f91 {
+  box-shadow: 0 0 0 2px var(--kaka-cyan), 0 0 18px rgba(56,216,255,0.45) !important;
+}
+
+/* =========================
+   MEMBER LIST CARDS
+   ========================= */
+
+.visual-refresh .member__5d473,
+.visual-refresh .members_c8ffbb .member__5d473 {
+  border-radius: var(--kaka-radius-md) !important;
+}
+
+.visual-refresh .member__5d473:hover {
+  background: rgba(56,216,255,0.12) !important;
+}
+
+/* =========================
+   SCROLLBARS
+   ========================= */
+
+::-webkit-scrollbar {
+  width: 10px !important;
+  height: 10px !important;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.12) !important;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(56, 216, 255, 0.90), rgba(138, 92, 255, 0.86)) !important;
+  border: 3px solid transparent !important;
+  background-clip: padding-box !important;
+  border-radius: 999px !important;
+}
+
+/* =========================
+   OPTIONAL LIGHTNING ANIMATIONS
+   ========================= */
+
+@keyframes core-seli-lightning-pulse {
+  0%, 100% {
+    box-shadow:
+      0 0 calc(10px * var(--kaka-glow-strength)) rgba(56,216,255,0.22),
+      inset 0 0 0 1px rgba(255,255,255,0.10);
+  }
+  50% {
+    box-shadow:
+      0 0 calc(22px * var(--kaka-glow-strength)) rgba(56,216,255,0.36),
+      0 0 calc(30px * var(--kaka-glow-strength)) rgba(138,92,255,0.18),
+      inset 0 0 0 1px rgba(255,255,255,0.14);
+  }
+}
+
+/* Limited animation only on selected items, not entire message list */
+.visual-refresh .modeSelected__2ea32 .link__2ea32,
+.visual-refresh .interactiveSelected__972a0 {
+  animation: core-seli-lightning-pulse 2.4s ease-in-out infinite;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .visual-refresh .modeSelected__2ea32 .link__2ea32,
+  .visual-refresh .interactiveSelected__972a0 {
+    animation: none !important;
+  }
+
+  .visual-refresh .message__5126c,
+  .visual-refresh .link__2ea32,
+  .visual-refresh .layout__91a9d,
+  .visual-refresh .interactive__972a0,
+  .visual-refresh .tabBarItem_b9fccc,
+  .visual-refresh .button__201d5,
+  .visual-refresh .item_b3f026 {
+    transition: none !important;
+  }
+}
+
+/* =========================
+   QUICK USER TWEAK NOTES
+   =========================
+   Higher glow:
+   --kaka-glow-strength: 0.85;
+
+   More transparent panels:
+   --kaka-panel-opacity: 0.38;
+
+   Darker background:
+   --kaka-bg-darkness: 0.72;
+
+   Max smoothness:
+   set --kaka-glow-strength: 0.35 and remove the selected-channel animation block.
+*/
+
+
+/* =========================================================
+   CORE + SELI PERSONAL FINAL-BOSS PATCH v2.1
+   =========================================================
+   Adds personal polish without breaking ClearVision:
+   stronger Core + Seli identity, better profile/cards, media previews,
+   replies/mentions, call HUD, settings panels, and high-refresh guardrails.
+*/
+
+:root {
+  --core-name: "Core";
+  --seli-name: "Seli";
+  --kaka-signature: "Core + Seli";
+  --kaka-electric: #38d8ff;
+  --kaka-violet: #8a5cff;
+  --kaka-ink: #020611;
+  --kaka-panel-deep: rgba(2, 6, 17, 0.72);
+  --kaka-panel-soft: rgba(5, 14, 34, 0.52);
+  --kaka-line: rgba(56, 216, 255, 0.22);
+}
+
+/* Personal HUD signature */
+.visual-refresh .container__9293f::before {
+  content: var(--kaka-signature);
+  position: absolute;
+  right: 18px;
+  bottom: -18px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(145, 236, 255, 0.42);
+  pointer-events: none;
+}
+
+/* Home/server icon glow */
+.visual-refresh .tutorialContainer__1f388 .childWrapper__6e9f8,
+.visual-refresh .childWrapper__6e9f8 {
+  background:
+    radial-gradient(circle at 35% 25%, rgba(255,255,255,0.35), transparent 28%),
+    linear-gradient(135deg, var(--kaka-electric), var(--kaka-violet)) !important;
+  box-shadow:
+    0 0 18px rgba(56,216,255,0.32),
+    0 0 32px rgba(138,92,255,0.18) !important;
+}
+
+.visual-refresh .wrapper__6e9f8.selected__6e9f8 .childWrapper__6e9f8 {
+  box-shadow:
+    0 0 0 2px rgba(255,255,255,0.18),
+    0 0 24px rgba(56,216,255,0.55),
+    0 0 42px rgba(138,92,255,0.28) !important;
+}
+
+/* Server folders */
+.visual-refresh .folder__48112,
+.visual-refresh .folderIconWrapper__48112 {
+  background: linear-gradient(135deg, rgba(56,216,255,0.22), rgba(138,92,255,0.18)) !important;
+  border: 1px solid rgba(56,216,255,0.18) !important;
+}
+
+/* Chat hover and reply lightning */
+.visual-refresh .message__5126c:hover {
+  background:
+    linear-gradient(90deg, rgba(56,216,255,0.08), rgba(138,92,255,0.05), transparent) !important;
+  box-shadow: inset 2px 0 0 rgba(56,216,255,0.38) !important;
+  border-radius: 12px !important;
+}
+
+.visual-refresh .repliedMessage_c19a55::before,
+.visual-refresh .replying__5126c::before {
+  border-color: rgba(56,216,255,0.50) !important;
+}
+
+.visual-refresh .replying__5126c {
+  background: linear-gradient(90deg, rgba(56,216,255,0.15), rgba(138,92,255,0.07), transparent) !important;
+}
+
+/* Mentions */
+.visual-refresh .mention {
+  border-radius: 8px !important;
+  padding: 0 5px !important;
+  box-shadow: 0 0 12px rgba(56,216,255,0.20) !important;
+}
+
+/* Attachments/uploads */
+.visual-refresh .attachment__4cfe2,
+.visual-refresh .messageAttachment__5dae1,
+.visual-refresh .embedFull__623de,
+.visual-refresh .embed__623de,
+.visual-refresh .container_a8e786 {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.06), rgba(138,92,255,0.05)),
+    rgba(2, 6, 17, 0.56) !important;
+  border: 1px solid rgba(56,216,255,0.18) !important;
+  border-radius: var(--kaka-radius-lg) !important;
+}
+
+/* Better in-chat media */
+.visual-refresh .imageWrapper_af017a,
+.visual-refresh .imageWrapper__178ee,
+.visual-refresh .embedMedia__623de {
+  border-radius: var(--kaka-radius-lg) !important;
+  overflow: hidden !important;
+  box-shadow:
+    0 0 0 1px rgba(56,216,255,0.10),
+    0 12px 34px rgba(0,0,0,0.22) !important;
+}
+
+/* Profile cards */
+.visual-refresh .userPopoutOuter_c69a7b,
+.visual-refresh .outer_c0bea0 {
+  background:
+    radial-gradient(circle at 25% 8%, rgba(56,216,255,0.16), transparent 32%),
+    radial-gradient(circle at 80% 0%, rgba(138,92,255,0.14), transparent 30%),
+    rgba(2, 6, 17, 0.86) !important;
+}
+
+.visual-refresh .banner__68edb,
+.visual-refresh .banner_c3e427 {
+  box-shadow: inset 0 -40px 70px rgba(2,6,17,0.46) !important;
+}
+
+/* Status dot glow */
+.visual-refresh rect[fill="#43b581"],
+.visual-refresh rect[fill="#23a55a"] {
+  filter: drop-shadow(0 0 5px rgba(67,209,139,0.65));
+}
+
+.visual-refresh rect[fill="#f0b232"],
+.visual-refresh rect[fill="#faa61a"] {
+  filter: drop-shadow(0 0 5px rgba(255,191,77,0.65));
+}
+
+.visual-refresh rect[fill="#f23f43"],
+.visual-refresh rect[fill="#ed4245"] {
+  filter: drop-shadow(0 0 5px rgba(255,63,110,0.65));
+}
+
+/* Context menus */
+.visual-refresh .menu_c1e9c4 .item_c1e9c4 {
+  border-radius: 10px !important;
+  margin: 2px 4px !important;
+}
+
+/* Search results / inbox / browse cards */
+.visual-refresh .searchResult__02a39,
+.visual-refresh .messageGroupWrapper__45690,
+.visual-refresh .container__6764b,
+.visual-refresh .channelRow_e4503a {
+  background: rgba(2, 6, 17, 0.62) !important;
+  border: 1px solid rgba(56,216,255,0.14) !important;
+  border-radius: var(--kaka-radius-lg) !important;
+}
+
+/* Settings page */
+.visual-refresh .standardSidebarView__23e6b,
+.visual-refresh .contentRegion__23e6b,
+.visual-refresh .contentRegionScroller__23e6b,
+.visual-refresh .sidebarRegionScroller__23e6b {
+  background: rgba(2, 6, 17, 0.58) !important;
+}
+
+.visual-refresh .side_b3f026 .item_b3f026 {
+  border-radius: 999px !important;
+}
+
+.visual-refresh .side_b3f026 .item_b3f026:hover {
+  background: rgba(56,216,255,0.13) !important;
+}
+
+/* Friends/activity cards */
+.visual-refresh .itemCard__7e549,
+.visual-refresh .peopleListItem_cc6179,
+.visual-refresh .activeNowOuter__7d20c,
+.visual-refresh .wrapper__00943,
+.visual-refresh .section__00943 {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.06), rgba(138,92,255,0.04)),
+    rgba(2,6,17,0.54) !important;
+  border: 1px solid rgba(56,216,255,0.14) !important;
+  border-radius: var(--kaka-radius-lg) !important;
+}
+
+/* Voice connected panel: comms HUD */
+.visual-refresh .panels_c48ade::before {
+  content: "COMMS";
+  position: absolute;
+  top: 8px;
+  right: 14px;
+  font-size: 9px;
+  font-weight: 900;
+  letter-spacing: 0.2em;
+  color: rgba(145,236,255,0.36);
+  pointer-events: none;
+}
+
+/* Call / stream tiles */
+.visual-refresh .tile__2f4f7,
+.visual-refresh .tile__90dc5,
+.visual-refresh .root_bfe55a video,
+.visual-refresh .video__4d3a9 {
+  border-radius: var(--kaka-radius-lg) !important;
+  box-shadow:
+    0 0 0 1px rgba(56,216,255,0.16),
+    0 12px 36px rgba(0,0,0,0.30) !important;
+}
+
+/* Text selection */
+::selection {
+  background: rgba(56,216,255,0.36);
+  color: #ffffff;
+}
+
+/* High-refresh scrolling guardrails */
+.visual-refresh .messageListItem__5126c {
+  contain: layout paint style;
+}
+
+.visual-refresh .scrollerInner__36d07,
+.visual-refresh .scroller__36d07,
+.visual-refresh .scroller__99e7c {
+  animation: none !important;
+}
+
+/* Electric line at top of chat */
+.visual-refresh .chat_f75fb0::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 18px;
+  right: 18px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(56,216,255,0.55), rgba(138,92,255,0.42), transparent);
+  pointer-events: none;
+  z-index: 2;
+}
+
+
+/* =========================================================
+   CORE + SELI VENCORD PLUGIN COMPAT PATCH v2.2
+   =========================================================
+   Built around your enabled Vencord plugins:
+   BetterFolders, BetterUploadButton, BiggerStreamPreview, CallTimer,
+   CharacterCounter, FakeNitro, FixImagesQuality, ImageFilename/ImageLink,
+   ImageZoom, MemberCount, MessageLatency, MessageLogger, MoreQuickReactions,
+   PinDMs, PlatformIndicators, PreviewMessage, RelationshipNotifier,
+   ReviewDB, ServerInfo, ServerListIndicators, ShikiCodeblocks,
+   ShowConnections, ShowHiddenChannels/Things, SilentTyping,
+   SpotifyControls, TypingIndicator/TypingTweaks, UserVoiceShow, USRBG,
+   VencordToolbox, ViewIcons, VolumeBooster, XSOverlay.
+*/
+
+/* Vencord notifications: make plugin popups match the theme */
+.vc-notification-root,
+.vc-notification,
+[class*="notification"] {
+  border-radius: 16px !important;
+}
+
+.vc-notification {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.14), rgba(138,92,255,0.10)),
+    rgba(2, 6, 17, 0.88) !important;
+  border: 1px solid rgba(56,216,255,0.25) !important;
+  color: #e7f8ff !important;
+  box-shadow:
+    0 0 28px rgba(56,216,255,0.18),
+    0 14px 40px rgba(0,0,0,0.42) !important;
+}
+
+/* BetterFolders / ServerListIndicators */
+.vc-betterFolders-sidebar,
+.vc-betterFolders-sidebar *,
+[class*="betterFolders"] {
+  border-color: rgba(56,216,255,0.18) !important;
+}
+
+.vc-betterFolders-sidebar {
+  background:
+    linear-gradient(180deg, rgba(56,216,255,0.08), rgba(138,92,255,0.05)),
+    rgba(2,6,17,0.54) !important;
+  border-right: 1px solid rgba(56,216,255,0.14) !important;
+}
+
+/* PinDMs categories: make "My World" / "Wifey" styled like personal sections */
+[class*="pinDM"],
+[class*="PinDM"],
+[class*="pindm"] {
+  border-radius: 12px !important;
+}
+
+[class*="pinDM"] [class*="category"],
+[class*="PinDM"] [class*="category"],
+[class*="pindm"] [class*="category"] {
+  color: var(--kaka-cyan-soft, #91ecff) !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.08em !important;
+  font-weight: 800 !important;
+}
+
+/* BetterUploadButton + chat buttons */
+.visual-refresh .attachButton__0923f,
+.visual-refresh .attachButtonInner__0923f,
+.visual-refresh .buttons__74017 button,
+.visual-refresh .buttonContainer__74017 button,
+.vc-betterUploadButton {
+  color: var(--kaka-cyan-soft, #91ecff) !important;
+  border-radius: 12px !important;
+}
+
+.visual-refresh .attachButton__0923f:hover,
+.visual-refresh .buttons__74017 button:hover,
+.vc-betterUploadButton:hover {
+  background: rgba(56,216,255,0.13) !important;
+  box-shadow: 0 0 14px rgba(56,216,255,0.20) !important;
+}
+
+/* CharacterCounter */
+.vc-char-counter,
+.vc-character-counter,
+[class*="characterCounter"] {
+  color: rgba(145,236,255,0.72) !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 10px rgba(56,216,255,0.18) !important;
+}
+
+/* SilentTyping icon / silent message controls */
+.vc-silent-typing,
+.vc-silenttyping,
+[class*="silentTyping"],
+[class*="SilentTyping"] {
+  color: var(--kaka-purple-soft, #b49aff) !important;
+  filter: drop-shadow(0 0 6px rgba(138,92,255,0.35));
+}
+
+/* TypingIndicator + TypingTweaks */
+.vc-typing-indicator,
+.vc-typing-indicator *,
+[class*="typingIndicator"],
+[class*="TypingIndicator"] {
+  color: var(--kaka-cyan-soft, #91ecff) !important;
+}
+
+.visual-refresh .typingDots_b88801,
+.visual-refresh .ellipsis_b88801 {
+  filter: drop-shadow(0 0 7px rgba(56,216,255,0.45));
+}
+
+/* MemberCount / ServerInfo */
+.vc-membercount,
+.vc-member-count,
+.vc-server-info,
+[class*="memberCount"],
+[class*="MemberCount"],
+[class*="serverInfo"],
+[class*="ServerInfo"] {
+  color: rgba(231,248,255,0.82) !important;
+  background: rgba(2,6,17,0.38) !important;
+  border: 1px solid rgba(56,216,255,0.14) !important;
+  border-radius: 999px !important;
+  padding: 2px 8px !important;
+}
+
+/* MessageLatency */
+.vc-message-latency,
+[class*="messageLatency"],
+[class*="MessageLatency"] {
+  color: rgba(145,236,255,0.64) !important;
+  font-size: 10px !important;
+}
+
+/* MessageLogger deleted/edited message polish */
+.vc-deleted-message,
+.vc-ml-deleted,
+[class*="deletedMessage"],
+[class*="messageLogger"] {
+  background: linear-gradient(90deg, rgba(255,63,110,0.13), rgba(138,92,255,0.05), transparent) !important;
+  border-left: 3px solid rgba(255,63,110,0.55) !important;
+  border-radius: 10px !important;
+}
+
+/* MoreQuickReactions / reaction popover */
+.vc-moreQuickReactions,
+.vc-quick-reaction,
+.visual-refresh .reaction__23977,
+.visual-refresh .reactionBtn__23977 {
+  border-radius: 999px !important;
+}
+
+.visual-refresh .reaction__23977 {
+  background: rgba(56,216,255,0.08) !important;
+  border: 1px solid rgba(56,216,255,0.12) !important;
+}
+
+.visual-refresh .reaction__23977:hover {
+  background: rgba(56,216,255,0.18) !important;
+}
+
+/* PreviewMessage */
+.vc-preview-message,
+[class*="previewMessage"],
+[class*="PreviewMessage"] {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.08), rgba(138,92,255,0.06)),
+    rgba(2,6,17,0.72) !important;
+  border: 1px solid rgba(56,216,255,0.18) !important;
+  border-radius: 14px !important;
+}
+
+/* RelationshipNotifier + ReviewDB warnings */
+.vc-relationship-notifier,
+.vc-reviewdb,
+.vc-rdb,
+[class*="relationshipNotifier"],
+[class*="RelationshipNotifier"],
+[class*="reviewdb"],
+[class*="ReviewDB"] {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.10), rgba(138,92,255,0.08)),
+    rgba(2,6,17,0.82) !important;
+  border: 1px solid rgba(56,216,255,0.20) !important;
+  border-radius: 14px !important;
+}
+
+/* PlatformIndicators / UserVoiceShow / ShowConnections */
+.vc-platform-indicator,
+.vc-platform-indicator *,
+.vc-user-voice-show,
+.vc-show-connections,
+[class*="platformIndicator"],
+[class*="PlatformIndicator"],
+[class*="userVoiceShow"],
+[class*="UserVoiceShow"],
+[class*="showConnections"],
+[class*="ShowConnections"] {
+  color: var(--kaka-cyan-soft, #91ecff) !important;
+  filter: drop-shadow(0 0 4px rgba(56,216,255,0.30));
+}
+
+/* ShikiCodeblocks: make its 100% bg fit the theme */
+.vc-shiki-codeblock,
+.vc-shiki-codeblock pre,
+.vc-shiki-codeblock code,
+.shiki,
+.shiki code {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.045), rgba(138,92,255,0.04)),
+    rgba(1, 6, 16, 0.88) !important;
+  border-radius: 14px !important;
+}
+
+.vc-shiki-codeblock {
+  border: 1px solid rgba(56,216,255,0.22) !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(138,92,255,0.08),
+    0 0 20px rgba(56,216,255,0.08) !important;
+}
+
+/* ImageZoom / FixImagesQuality / ImageFilename / ImageLink / ViewIcons */
+.vc-imagezoom,
+.vc-image-link,
+.vc-image-filename,
+[class*="imageZoom"],
+[class*="ImageZoom"],
+[class*="imageFilename"],
+[class*="ImageFilename"] {
+  color: rgba(145,236,255,0.78) !important;
+}
+
+.visual-refresh .imageWrapper_af017a:hover,
+.visual-refresh .imageWrapper__178ee:hover {
+  box-shadow:
+    0 0 0 1px rgba(56,216,255,0.28),
+    0 0 24px rgba(56,216,255,0.13),
+    0 12px 34px rgba(0,0,0,0.26) !important;
+}
+
+/* BiggerStreamPreview + PictureInPicture */
+.vc-bigger-stream-preview,
+.vc-picture-in-picture,
+[class*="biggerStreamPreview"],
+[class*="BiggerStreamPreview"],
+[class*="pictureInPicture"],
+[class*="PictureInPicture"] {
+  border-radius: 18px !important;
+  border: 1px solid rgba(56,216,255,0.22) !important;
+  box-shadow: 0 18px 44px rgba(0,0,0,0.42), 0 0 26px rgba(56,216,255,0.12) !important;
+}
+
+/* SpotifyControls / SpotifyCrack */
+.vc-spotify-button,
+.vc-spotify-button-row,
+.vc-spotify-progress,
+.vc-spotify-album-image,
+[class*="spotify"] button,
+[class*="Spotify"] button {
+  border-radius: 12px !important;
+}
+
+.vc-spotify-button:hover,
+[class*="spotify"] button:hover,
+[class*="Spotify"] button:hover {
+  background: rgba(56,216,255,0.15) !important;
+}
+
+.vc-spotify-progress,
+[class*="spotify"] [class*="progress"],
+[class*="Spotify"] [class*="progress"] {
+  accent-color: var(--kaka-cyan, #38d8ff) !important;
+}
+
+/* VolumeBooster warning styling */
+.vc-volume-booster,
+[class*="volumeBooster"],
+[class*="VolumeBooster"] {
+  color: #ffbf4d !important;
+  filter: drop-shadow(0 0 5px rgba(255,191,77,0.40));
+}
+
+/* VencordToolbox / Settings / plugin cards */
+.vc-toolbox,
+.vc-settings,
+.vc-plugins-grid,
+.vc-addon-card,
+[class*="VencordToolbox"],
+[class*="pluginCard"],
+[class*="AddonCard"] {
+  background:
+    linear-gradient(135deg, rgba(56,216,255,0.06), rgba(138,92,255,0.05)),
+    rgba(2,6,17,0.62) !important;
+  border-color: rgba(56,216,255,0.16) !important;
+  border-radius: 16px !important;
+}
+
+/* Petpet / oneko compatibility */
+#oneko {
+  filter:
+    drop-shadow(0 0 5px rgba(56,216,255,0.45))
+    drop-shadow(0 0 10px rgba(138,92,255,0.25));
+}
+
+/* BlurNSFW: make the warning overlay match */
+[class*="blurNSFW"],
+[class*="BlurNSFW"] {
+  border-radius: 14px !important;
+  box-shadow: inset 0 0 0 1px rgba(255,63,110,0.20) !important;
+}
+
+/* XSOverlay colours inside Discord settings/cards where visible */
+[class*="XSOverlay"],
+.vc-xsoverlay {
+  --pingColor: var(--kaka-cyan, #38d8ff);
+  --channelPingColor: var(--kaka-purple, #8a5cff);
+}
+
+/* Small performance safety: plugins can add lots of buttons; don't let all of them animate forever */
+.vc-plugins-grid *,
+.vc-addon-card *,
+.vc-toolbox *,
+.vc-settings * {
+  animation-duration: 160ms !important;
+}
+
+
+/* =========================================================
+   CORE + SELI HIGH-FPS PERFORMANCE PATCH v2.3
+   =========================================================
+   Goal: keep the same features/look, but make Discord repaint less.
+   This does NOT remove the theme features. It makes the expensive parts cheaper:
+   - no full-screen CSS filter on the wallpaper
+   - no fixed background attachment jank
+   - glow still exists, but with smaller paint radius
+   - no infinite selected-channel pulse
+   - plugin styling still exists, but broad plugin cards stop animating
+   - drop-shadows on tiny icons are reduced
+*/
+
+/* Main quick controls */
+:root {
+  --kaka-glow-strength: 0.42 !important;
+  --kaka-bg-darkness: 0.66 !important;
+  --kaka-panel-opacity: 0.52 !important;
+  --kaka-popout-opacity: 0.82 !important;
+  --kaka-modal-opacity: 0.66 !important;
+  --kaka-speed: 90ms ease !important;
+
+  /* Same image and colours, cheaper rendering */
+  --background-attachment: scroll !important;
+  --background-filter: none !important;
+}
+
+/* Full-screen filter is expensive. Use overlays instead. */
+#app-mount::before {
+  filter: none !important;
+  transform: translateZ(0);
+  will-change: auto !important;
+}
+
+/* Keep the cinematic darkness/aura without filtering the whole 2048px image every frame */
+#app-mount::after {
+  background:
+    radial-gradient(circle at 28% 44%, rgba(56, 216, 255, 0.10), transparent 24%),
+    radial-gradient(circle at 70% 18%, rgba(138, 92, 255, 0.10), transparent 27%),
+    linear-gradient(rgba(0, 3, 12, 0.24), rgba(0, 3, 12, 0.24)) !important;
+}
+
+/* Kill the one thing most likely to feel stuttery: infinite glow animation on selected rows */
+.visual-refresh .modeSelected__2ea32 .link__2ea32,
+.visual-refresh .interactiveSelected__972a0 {
+  animation: none !important;
+}
+
+/* Selected/unread still glow, just with smaller paint radius */
+.visual-refresh .modeSelected__2ea32 .link__2ea32,
+.visual-refresh .modeSelected__2ea32:hover .link__2ea32,
+.visual-refresh .selected__91a9d .layout__91a9d,
+.visual-refresh .interactiveSelected__972a0,
+.visual-refresh .tabBarItem_b9fccc[aria-selected="true"],
+.visual-refresh .side_b3f026 .themed_b3f026.selected_b3f026.item_b3f026,
+.visual-refresh .topPill_b3f026 .themed_b3f026.selected_b3f026.item_b3f026 {
+  box-shadow:
+    0 0 8px rgba(56,216,255,0.20),
+    inset 0 0 0 1px rgba(255,255,255,0.10) !important;
+}
+
+.visual-refresh .unread__2ea32,
+.visual-refresh .item__58105 {
+  box-shadow: 0 0 6px rgba(56,216,255,0.45) !important;
+}
+
+/* Large panel shadows are expensive while scrolling. Keep border/glass, reduce shadow size. */
+.visual-refresh .wrapper_ef3116,
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .container__2637a,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .container__9293f,
+.visual-refresh .membersWrap_c8ffbb,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .panels_c48ade,
+.visual-refresh .peopleColumn__133bf,
+.visual-refresh .container__37e49,
+.visual-refresh .container_c8ffbb {
+  box-shadow:
+    0 0 8px rgba(56,216,255,0.055),
+    inset 0 0 0 1px rgba(255,255,255,0.025) !important;
+}
+
+/* Message rows are the thing you scroll most. Keep hover line, avoid heavy shadows. */
+.visual-refresh .message__5126c,
+.visual-refresh .messageListItem__5126c {
+  contain: paint style !important;
+}
+
+.visual-refresh .message__5126c:hover {
+  box-shadow: inset 2px 0 0 rgba(56,216,255,0.32) !important;
+}
+
+/* Reduce image/media shadows while keeping the premium border. */
+.visual-refresh .imageWrapper_af017a,
+.visual-refresh .imageWrapper__178ee,
+.visual-refresh .embedMedia__623de,
+.visual-refresh .image__4f3da,
+.visual-refresh .image_af017a,
+.visual-refresh .imageWrapper_af017a img,
+.visual-refresh .imageWrapper__178ee img,
+.visual-refresh .mediaAttachmentsContainer__242e2 img {
+  box-shadow:
+    0 0 0 1px rgba(56,216,255,0.12),
+    0 8px 18px rgba(0,0,0,0.20) !important;
+}
+
+/* Popouts/context menus still themed, but less huge glow. */
+.visual-refresh .menu_c1e9c4,
+.visual-refresh .root__49fc1,
+.visual-refresh .userPopoutOuter_c69a7b,
+.visual-refresh .outer_c0bea0,
+.visual-refresh .contentWrapper__08434,
+.visual-refresh .contentWrapper_eab878,
+.visual-refresh .emojiPicker_c0e32c,
+.visual-refresh .container__53cea,
+.visual-refresh .container_dca174,
+.visual-refresh .accountProfileCard__1fed1,
+.visual-refresh .background__1fed1,
+.visual-refresh .fieldList__1fed1,
+.visual-refresh .tooltip__382e7,
+.visual-refresh .tooltipPrimary__382e7 {
+  box-shadow:
+    0 0 12px rgba(56,216,255,0.10),
+    0 10px 30px rgba(0,0,0,0.32) !important;
+}
+
+/* Drop-shadow filters can be surprisingly costly; keep only Oneko glow, remove tiny status icon filters. */
+.visual-refresh rect[fill="#43b581"],
+.visual-refresh rect[fill="#23a55a"],
+.visual-refresh rect[fill="#f0b232"],
+.visual-refresh rect[fill="#faa61a"],
+.visual-refresh rect[fill="#f23f43"],
+.visual-refresh rect[fill="#ed4245"],
+.vc-platform-indicator,
+.vc-platform-indicator *,
+.vc-user-voice-show,
+.vc-show-connections,
+[class*="platformIndicator"],
+[class*="PlatformIndicator"],
+[class*="userVoiceShow"],
+[class*="UserVoiceShow"],
+[class*="showConnections"],
+[class*="ShowConnections"] {
+  filter: none !important;
+}
+
+/* Keep Oneko cute but cheaper than stacked glow. */
+#oneko {
+  filter: drop-shadow(0 0 4px rgba(56,216,255,0.35)) !important;
+}
+
+/* Buttons: keep gradient, lighter glow. */
+.visual-refresh .lookFilled__201d5.colorBrand__201d5,
+.visual-refresh .lookFilled__201d5.colorPrimary__201d5 {
+  box-shadow: 0 0 8px rgba(56,216,255,0.14) !important;
+}
+
+.visual-refresh .lookFilled__201d5.colorBrand__201d5:hover,
+.visual-refresh .lookFilled__201d5.colorPrimary__201d5:hover {
+  transform: none !important;
+}
+
+/* Plugin-generated UI can be very busy. Keep styling, stop mass animations. */
+.vc-plugins-grid *,
+.vc-addon-card *,
+.vc-toolbox *,
+.vc-settings *,
+[class*="VencordToolbox"],
+[class*="pluginCard"],
+[class*="AddonCard"] {
+  animation: none !important;
+  transition-duration: 80ms !important;
+}
+
+/* Chat scrollers: no transitions/animations on giant moving surfaces. */
+.visual-refresh .scrollerInner__36d07,
+.visual-refresh .scroller__36d07,
+.visual-refresh .scroller__99e7c,
+.visual-refresh .members_c8ffbb,
+.visual-refresh .chatContent_f75fb0 {
+  animation: none !important;
+  transition: none !important;
+  will-change: auto !important;
+}
+
+/* Keep image modal transparent but lighter. */
+.visual-refresh .layer__960e4 .root__49fc1,
+.visual-refresh .root__49fc1,
+.visual-refresh .modal__4f3da,
+.visual-refresh .modalRoot__4f3da,
+.visual-refresh .carouselModal_d3a6f0,
+.visual-refresh .imageModal__4f3da,
+.visual-refresh .modalCarouselWrapper_d3a6f0,
+.visual-refresh .wrapper_cb9592,
+.visual-refresh .modalContent__4f3da,
+.visual-refresh .content__49fc1,
+.visual-refresh .focusLock__49fc1 {
+  background: rgba(4, 8, 20, 0.08) !important;
+}
+
+/* Highest-FPS emergency switch:
+   Uncomment this if it still feels laggy:
+   :root { --kaka-glow-strength: 0.25 !important; }
+*/
+
+
+/* =========================================================
+   CORE + SELI HEADER / TOP BAR CLIPPING FIX v2.4
+   =========================================================
+   Fixes the top Discord header/toolbar getting cut off into a thin strip.
+   Cause: rounded/contained header styling + ClearVision/Discord visual refresh
+   can clip toolbar children when the header height is not forced.
+*/
+
+.visual-refresh .container__9293f,
+.visual-refresh .upperContainer__9293f,
+.visual-refresh .toolbar__9293f,
+.visual-refresh .children__9293f,
+.visual-refresh .topic__6ec1a,
+.visual-refresh .titleWrapper__9293f {
+  min-height: 48px !important;
+  height: 48px !important;
+  max-height: none !important;
+  overflow: visible !important;
+  clip-path: none !important;
+  contain: none !important;
+}
+
+.visual-refresh .container__9293f {
+  display: flex !important;
+  align-items: center !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  margin: 0 8px 8px 8px !important;
+  border-radius: 0 0 var(--kaka-radius-xl) var(--kaka-radius-xl) !important;
+  z-index: 5 !important;
+}
+
+.visual-refresh .toolbar__9293f {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex: 0 0 auto !important;
+  transform: none !important;
+}
+
+.visual-refresh .toolbar__9293f .iconWrapper__9293f,
+.visual-refresh .toolbar__9293f button,
+.visual-refresh .toolbar__9293f [role="button"] {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px !important;
+  min-height: 32px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  overflow: visible !important;
+  transform: none !important;
+}
+
+/* If a plugin/theme turns the toolbar into a pill, make sure it has enough height */
+.visual-refresh .toolbar__9293f::before,
+.visual-refresh .toolbar__9293f::after,
+.visual-refresh .container__9293f::after {
+  max-height: none !important;
+  overflow: visible !important;
+}
+
+/* Move the Core + Seli signature so it doesn't overlap/crop the toolbar */
+.visual-refresh .container__9293f::before {
+  right: 18px !important;
+  bottom: -13px !important;
+  z-index: 0 !important;
+}
+
+/* Streaming/call header thumbnails sometimes compress the titlebar */
+.visual-refresh .callContainer_cb9592,
+.visual-refresh .wrapper_cb9592,
+.visual-refresh .root_bfe55a {
+  overflow: visible !important;
+  clip-path: none !important;
+}
