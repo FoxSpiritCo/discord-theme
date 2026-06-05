@@ -1,0 +1,434 @@
+/**
+ * @name Strawberry Melody ACTIVE
+ * @author Core + Seli
+ * @version 4.1.0
+ * @description Final active local import. Loads glossy-smooth Strawberry Melody, force-fixes background image, applies Kirby My Melody Oneko, and makes image preview modal transparent.
+ *
+ * Requires Vencord's built-in "oneko" plugin enabled.
+ */
+
+@import url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/StrawberryMelodyKawaiiLite_GitHubReady_GLOSSY_SMOOTH.theme.css?v=4");
+
+/* =========================
+   FORCE BACKGROUND FIX
+   ========================= */
+
+body,
+#app-mount,
+.app__160d8,
+.bg__960e4,
+.visual-refresh .app__160d8,
+.visual-refresh .bg__960e4 {
+  background: transparent !important;
+}
+
+.bg__960e4,
+#app-mount::before {
+  background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/9dd3f733c9b1538c9c30a27ccda99370.png?v=4") !important;
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+}
+
+#app-mount::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#app-mount > * {
+  position: relative;
+  z-index: 1;
+}
+
+#app-mount::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: rgba(255, 245, 250, 0.08);
+}
+
+.visual-refresh .app__160d8,
+.visual-refresh .bg__960e4,
+.visual-refresh .layers__960e4,
+.visual-refresh .layer__960e4,
+.visual-refresh .base_c48ade,
+.visual-refresh .page_c48ade,
+.visual-refresh .chat_f75fb0,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .content_f75fb0,
+.visual-refresh .container__9293f.themed__9293f,
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .container__2637a,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .scroller__99e7c,
+.visual-refresh .container_c8ffbb,
+.visual-refresh .members_c8ffbb,
+.visual-refresh .members_c8ffbb > div,
+.visual-refresh .nowPlayingColumn__133bf {
+  background-color: transparent !important;
+}
+
+/* =========================
+   TRANSPARENT IMAGE / MEDIA PREVIEW MODAL
+   =========================
+   Fixes the huge white box when opening an image.
+*/
+
+.visual-refresh .layer__960e4 .root__49fc1,
+.visual-refresh .root__49fc1,
+.visual-refresh .modal__4f3da,
+.visual-refresh .modalRoot__4f3da,
+.visual-refresh .carouselModal_d3a6f0,
+.visual-refresh .imageModal__4f3da,
+.visual-refresh .modalCarouselWrapper_d3a6f0,
+.visual-refresh .wrapper_cb9592,
+.visual-refresh .modalContent__4f3da,
+.visual-refresh .content__49fc1,
+.visual-refresh .focusLock__49fc1 {
+  background: rgba(255, 245, 250, 0.045) !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* Main dark overlay behind image preview: still dim, but lets your theme show through */
+.visual-refresh .backdrop__1a911,
+.visual-refresh .backdrop__78332,
+.visual-refresh .backdrop__7b89b,
+.backdrop__1a911,
+.backdrop__78332,
+.backdrop__7b89b {
+  background: rgba(20, 12, 18, 0.42) !important;
+  opacity: 1 !important;
+}
+
+/* Image preview stage / click area */
+.visual-refresh .downloadLink__4f3da,
+.visual-refresh .imageWrapper_af017a,
+.visual-refresh .imageWrapper__178ee,
+.visual-refresh .mediaAttachmentsContainer__242e2,
+.visual-refresh .mediaAttachmentsContainer__1d7b6,
+.visual-refresh .mediaView__4f3da,
+.visual-refresh .carouselModal_d3a6f0,
+.visual-refresh .wrapper__2d9b1,
+.visual-refresh .wrapper__4f3da {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Remove the big white preview card/panel */
+.visual-refresh .root__49fc1::before,
+.visual-refresh .root__49fc1::after,
+.visual-refresh .imageModal__4f3da::before,
+.visual-refresh .imageModal__4f3da::after,
+.visual-refresh .modal__4f3da::before,
+.visual-refresh .modal__4f3da::after {
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* Keep opened image itself clean */
+.visual-refresh .image__4f3da,
+.visual-refresh .image_af017a,
+.visual-refresh .imageWrapper_af017a img,
+.visual-refresh .imageWrapper__178ee img,
+.visual-refresh .mediaAttachmentsContainer__242e2 img {
+  background: transparent !important;
+  border-radius: 14px !important;
+  box-shadow: 0 10px 28px rgba(80, 40, 60, 0.18) !important;
+}
+
+/* Top-right modal buttons: cute pink glass instead of black/default */
+.visual-refresh .actionButtons__4f3da,
+.visual-refresh .modalActions__4f3da,
+.visual-refresh .downloadButton__4f3da,
+.visual-refresh .closeButton__8177f,
+.visual-refresh .closeButton__49fc1,
+.visual-refresh .button__201d5 {
+  border-radius: 999px !important;
+}
+
+.visual-refresh .actionButtons__4f3da button,
+.visual-refresh .modalActions__4f3da button,
+.visual-refresh .closeButton__8177f,
+.visual-refresh .closeButton__49fc1 {
+  background: rgba(255, 235, 245, 0.78) !important;
+  color: #c45a82 !important;
+  border: 1px solid rgba(228, 158, 177, 0.35) !important;
+  box-shadow: none !important;
+}
+
+/* Remove white from embed/media surrounding containers too */
+.visual-refresh .embedFull__623de,
+.visual-refresh .embed__623de,
+.visual-refresh .messageAttachment__5dae1,
+.visual-refresh .attachment__4cfe2,
+.visual-refresh .container_a8e786,
+.visual-refresh .wrapper_d5f3cd {
+  background: rgba(255, 255, 255, 0.10) !important;
+  border-color: rgba(228, 158, 177, 0.22) !important;
+}
+
+/* =========================
+   KIRBY MY MELODY ONEKO
+   ========================= */
+
+#oneko {
+  background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/kirby-my-melody-oneko-originalproportions.png?v=4") !important;
+  width: 32px !important;
+  height: 32px !important;
+  image-rendering: pixelated !important;
+  pointer-events: none !important;
+  z-index: 2147483647 !important;
+  transform: scale(1.55);
+  transform-origin: center;
+}
+
+#oneko::after {
+  content: "♡";
+  position: absolute;
+  left: 18px;
+  top: -12px;
+  font-size: 14px;
+  font-weight: 900;
+  color: #e49eb1;
+  text-shadow:
+    0 0 3px white,
+    0 0 6px rgba(244, 199, 211, 0.8);
+  animation: melody-heart-pop 1.8s ease-in-out infinite;
+}
+
+@keyframes melody-heart-pop {
+  0%, 100% {
+    opacity: 0.45;
+    transform: translateY(0) scale(0.9) rotate(-8deg);
+  }
+  50% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.08) rotate(8deg);
+  }
+}
+
+/* ===========================================================
+   SELI 12-HOUR GITHUB BACKGROUND + PALETTE CYCLE
+   Upload the 8 image files to your GitHub repo root with the
+   exact filenames shown below. No plugin needed.
+
+   IMPORTANT:
+   - This is CSS-only, so it CYCLES instead of true random.
+   - Each look lasts about 12 hours.
+   - Full loop = 8 looks × 12 hours = 96 hours.
+   =========================================================== */
+
+:root,
+body,
+#app-mount {
+  --seli-cycle-duration: 345600s; /* 96 hours total = 8 themes x 12h */
+  --seli-bg-position: center;
+  --seli-bg-size: cover;
+}
+
+body,
+#app-mount,
+.app__160d8,
+.bg__960e4,
+.visual-refresh .app__160d8,
+.visual-refresh .bg__960e4 {
+  background: transparent !important;
+}
+
+.bg__960e4,
+#app-mount::before {
+  background-position: var(--seli-bg-position) !important;
+  background-size: var(--seli-bg-size) !important;
+  background-repeat: no-repeat !important;
+  animation: seli-bg-cycle var(--seli-cycle-duration) steps(8, end) infinite !important;
+}
+
+#app-mount::after {
+  animation: seli-veil-cycle var(--seli-cycle-duration) steps(8, end) infinite !important;
+}
+
+:root,
+#app-mount {
+  animation: seli-palette-cycle var(--seli-cycle-duration) steps(8, end) infinite !important;
+}
+
+.visual-refresh,
+.theme-light,
+.theme-dark {
+  --brand-500: var(--seli-main) !important;
+  --brand-560: var(--seli-main) !important;
+  --control-brand-foreground: var(--seli-main) !important;
+  --interactive-active: var(--seli-dark) !important;
+  --interactive-hover: var(--seli-main) !important;
+  --text-link: var(--seli-main) !important;
+  --focus-primary: var(--seli-main) !important;
+  --button-secondary-background: rgba(255,255,255,.50) !important;
+  --button-secondary-background-hover: var(--seli-card) !important;
+}
+
+.visual-refresh .container__9293f.themed__9293f,
+.visual-refresh .sidebar_c48ade,
+.visual-refresh .container__2637a,
+.visual-refresh .privateChannels__35e86,
+.visual-refresh .scroller__99e7c,
+.visual-refresh .container_c8ffbb,
+.visual-refresh .members_c8ffbb,
+.visual-refresh .members_c8ffbb > div,
+.visual-refresh .nowPlayingColumn__133bf,
+.visual-refresh .chat_f75fb0,
+.visual-refresh .chatContent_f75fb0,
+.visual-refresh .content_f75fb0 {
+  background-color: rgba(255,255,255,.12) !important;
+  border-color: color-mix(in srgb, var(--seli-main) 26%, transparent) !important;
+}
+
+.visual-refresh .button__201d5,
+.visual-refresh .lookFilled__201d5.colorBrand__201d5,
+.visual-refresh .selected__91a9d,
+.visual-refresh .selected_b3f026,
+.visual-refresh .mentioned__5126c,
+.visual-refresh .replying__5126c {
+  background: color-mix(in srgb, var(--seli-main) 22%, rgba(255,255,255,.55)) !important;
+  color: var(--seli-dark) !important;
+  border-color: color-mix(in srgb, var(--seli-main) 38%, transparent) !important;
+}
+
+.visual-refresh .name__91a9d,
+.visual-refresh .username__0a06e,
+.visual-refresh .headerText_c19a55,
+.visual-refresh .title_c38106,
+.visual-refresh .title__9293f {
+  color: color-mix(in srgb, var(--seli-dark) 82%, var(--seli-main)) !important;
+}
+
+@keyframes seli-bg-cycle {
+  0.0% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/%E2%9C%A7%EF%BD%A5%EF%BE%9F_%20_%E2%9C%A7%EF%BD%A5%EF%BE%9F__.jpg?v=12h-cycle-1") !important; } /* 1. dream-island */
+  12.5% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/download%20(14).jpg?v=12h-cycle-1") !important; } /* 2. moon-lake */
+  25.0% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/download%20(13).jpg?v=12h-cycle-1") !important; } /* 3. fuji-sunset */
+  37.5% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/p%C3%B4r%20do%20sol%20__).jpg?v=12h-cycle-1") !important; } /* 4. minecraft-pink */
+  50.0% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/download%20(12).jpg?v=12h-cycle-1") !important; } /* 5. pastel-girl-cat */
+  62.5% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/_D.jpg?v=12h-cycle-1") !important; } /* 6. tiny-sanrio */
+  75.0% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/download%20(11).jpg?v=12h-cycle-1") !important; } /* 7. pond-cat */
+  87.5% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/Pink%20Gamer%20Kawaii%20Wallpaper%20_%20Sanrio%20Friends%2C%20Totoro%20%26%20Retro%20Consoles.jpg?v=12h-cycle-1") !important; } /* 8. pink-gamer */
+  100% { background-image: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/%E2%9C%A7%EF%BD%A5%EF%BE%9F_%20_%E2%9C%A7%EF%BD%A5%EF%BE%9F__.jpg?v=12h-cycle-1") !important; }
+}
+
+@keyframes seli-veil-cycle {
+  0.0% { background: linear-gradient(135deg, rgba(185,152,255,.18), rgba(255,255,255,.06), color-mix(in srgb, #f6c6ff 13%, transparent)) !important; } /* 1. dream-island */
+  12.5% { background: linear-gradient(135deg, rgba(158,184,255,.18), rgba(255,255,255,.06), color-mix(in srgb, #ffd5f2 13%, transparent)) !important; } /* 2. moon-lake */
+  25.0% { background: linear-gradient(135deg, rgba(255,155,131,.16), rgba(255,255,255,.06), color-mix(in srgb, #ffd0b5 13%, transparent)) !important; } /* 3. fuji-sunset */
+  37.5% { background: linear-gradient(135deg, rgba(255,122,184,.18), rgba(255,255,255,.06), color-mix(in srgb, #b894ff 13%, transparent)) !important; } /* 4. minecraft-pink */
+  50.0% { background: linear-gradient(135deg, rgba(215,167,255,.16), rgba(255,255,255,.06), color-mix(in srgb, #ffc5dc 13%, transparent)) !important; } /* 5. pastel-girl-cat */
+  62.5% { background: linear-gradient(135deg, rgba(159,199,255,.14), rgba(255,255,255,.06), color-mix(in srgb, #ffd8ef 13%, transparent)) !important; } /* 6. tiny-sanrio */
+  75.0% { background: linear-gradient(135deg, rgba(153,215,191,.16), rgba(255,255,255,.06), color-mix(in srgb, #ffb7d0 13%, transparent)) !important; } /* 7. pond-cat */
+  87.5% { background: linear-gradient(135deg, rgba(255,111,174,.2), rgba(255,255,255,.06), color-mix(in srgb, #ffb7d5 13%, transparent)) !important; } /* 8. pink-gamer */
+  100% { background: linear-gradient(135deg, rgba(185,152,255,.18), rgba(255,255,255,.06), color-mix(in srgb, #f6c6ff 13%, transparent)) !important; }
+}
+
+@keyframes seli-palette-cycle {
+  0.0% {
+    --seli-main: #b998ff;
+    --seli-soft: #f6c6ff;
+    --seli-dark: #20142f;
+    --seli-card: color-mix(in srgb, #f6c6ff 32%, rgba(255,255,255,.60));
+    --main-color: #b998ff;
+    --hover-color: #f6c6ff;
+    --success-color: #b998ff;
+    --danger-color: #ff8aa8;
+    --url-color: #b998ff;
+  } /* 1. dream-island */
+  12.5% {
+    --seli-main: #9eb8ff;
+    --seli-soft: #ffd5f2;
+    --seli-dark: #152238;
+    --seli-card: color-mix(in srgb, #ffd5f2 32%, rgba(255,255,255,.60));
+    --main-color: #9eb8ff;
+    --hover-color: #ffd5f2;
+    --success-color: #9eb8ff;
+    --danger-color: #ff8aa8;
+    --url-color: #9eb8ff;
+  } /* 2. moon-lake */
+  25.0% {
+    --seli-main: #ff9b83;
+    --seli-soft: #ffd0b5;
+    --seli-dark: #2f1b24;
+    --seli-card: color-mix(in srgb, #ffd0b5 32%, rgba(255,255,255,.60));
+    --main-color: #ff9b83;
+    --hover-color: #ffd0b5;
+    --success-color: #ff9b83;
+    --danger-color: #ff8aa8;
+    --url-color: #ff9b83;
+  } /* 3. fuji-sunset */
+  37.5% {
+    --seli-main: #ff7ab8;
+    --seli-soft: #b894ff;
+    --seli-dark: #211226;
+    --seli-card: color-mix(in srgb, #b894ff 32%, rgba(255,255,255,.60));
+    --main-color: #ff7ab8;
+    --hover-color: #b894ff;
+    --success-color: #ff7ab8;
+    --danger-color: #ff8aa8;
+    --url-color: #ff7ab8;
+  } /* 4. minecraft-pink */
+  50.0% {
+    --seli-main: #d7a7ff;
+    --seli-soft: #ffc5dc;
+    --seli-dark: #2b2138;
+    --seli-card: color-mix(in srgb, #ffc5dc 32%, rgba(255,255,255,.60));
+    --main-color: #d7a7ff;
+    --hover-color: #ffc5dc;
+    --success-color: #d7a7ff;
+    --danger-color: #ff8aa8;
+    --url-color: #d7a7ff;
+  } /* 5. pastel-girl-cat */
+  62.5% {
+    --seli-main: #9fc7ff;
+    --seli-soft: #ffd8ef;
+    --seli-dark: #1d2738;
+    --seli-card: color-mix(in srgb, #ffd8ef 32%, rgba(255,255,255,.60));
+    --main-color: #9fc7ff;
+    --hover-color: #ffd8ef;
+    --success-color: #9fc7ff;
+    --danger-color: #ff8aa8;
+    --url-color: #9fc7ff;
+  } /* 6. tiny-sanrio */
+  75.0% {
+    --seli-main: #99d7bf;
+    --seli-soft: #ffb7d0;
+    --seli-dark: #17302b;
+    --seli-card: color-mix(in srgb, #ffb7d0 32%, rgba(255,255,255,.60));
+    --main-color: #99d7bf;
+    --hover-color: #ffb7d0;
+    --success-color: #99d7bf;
+    --danger-color: #ff8aa8;
+    --url-color: #99d7bf;
+  } /* 7. pond-cat */
+  87.5% {
+    --seli-main: #ff6fae;
+    --seli-soft: #ffb7d5;
+    --seli-dark: #2d1122;
+    --seli-card: color-mix(in srgb, #ffb7d5 32%, rgba(255,255,255,.60));
+    --main-color: #ff6fae;
+    --hover-color: #ffb7d5;
+    --success-color: #ff6fae;
+    --danger-color: #ff8aa8;
+    --url-color: #ff6fae;
+  } /* 8. pink-gamer */
+  100% {
+    --seli-main: #b998ff;
+    --seli-soft: #f6c6ff;
+    --seli-dark: #20142f;
+    --seli-card: color-mix(in srgb, #f6c6ff 32%, rgba(255,255,255,.60));
+    --main-color: #b998ff;
+    --hover-color: #f6c6ff;
+    --success-color: #b998ff;
+    --danger-color: #ff8aa8;
+    --url-color: #b998ff;
+  }
+}
