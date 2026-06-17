@@ -1,0 +1,223 @@
+/**
+ * @name Rihana Theme
+ * @author Seli + Rihana
+ * @version 1.4.1
+ * @description Lightweight optimized ClearVision-based Vencord theme using a custom misty cherry blossom background.
+ * @source https://github.com/FoxSpiritCo/discord-theme
+ * @website https://github.com/ClearVision/ClearVision-v7
+ */
+
+/*
+ * RIHANA THEME — CLEAN VERSIONED BUILD
+ *
+ * Use this as the GitHub-hosted file.
+ * Upload it to your repo root as:
+ * Rihana.theme.css
+ *
+ * Required image in the same repo root:
+ * ede34a97-418e-456a-80e7-489faac8755b.png
+ *
+ * This file:
+ * - uses ClearVision v7 only
+ * - does not use ClearVision v6
+ * - does not use the old wrong image hash
+ * - uses the exact soft cherry blossom palette you gave
+ */
+
+/* Official ClearVision v7 Vencord base from the ClearVision GitHub */
+@import url("https://raw.githubusercontent.com/ClearVision/ClearVision-v7/master/ClearVision-v7-Vencord.css");
+
+:root {
+  /* Your GitHub-hosted background image */
+  --rihana-background: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/ede34a97-418e-456a-80e7-489faac8755b.png?theme=1.4.1");
+
+  /* Exact requested image palette */
+  --soft-cream: #f6efe4;
+  --mist-pink: #ead2d5;
+  --blossom-pink: #d9aeb8;
+  --dusty-rose: #b98b91;
+  --warm-brown: #5c4038;
+  --fog-lavender: #d8cdd4;
+  --dark-branch: #2d211f;
+
+  /* ClearVision accent colours */
+  --main-color: var(--blossom-pink);
+  --hover-color: var(--dusty-rose);
+  --success-color: #91b89a;
+  --danger-color: #c77d86;
+  --focus-color: rgba(217, 174, 184, 0.45);
+
+  /* Status colours, softened to match the image */
+  --online-color: #91b89a;
+  --idle-color: #d8b26e;
+  --dnd-color: #c77d86;
+  --streaming-color: #b9a1c9;
+  --offline-color: #9b8f90;
+
+  /* ClearVision background controls */
+  --background-shading-percent: 100%;
+  --background-image: var(--rihana-background);
+  --background-position: center;
+  --background-size: cover;
+  --background-attachment: fixed;
+  --background-filter: none;
+
+  /* Disable extra ClearVision image layers */
+  --user-popout-image: none;
+  --user-popout-position: center;
+  --user-popout-size: cover;
+  --user-popout-attachment: scroll;
+  --user-popout-filter: none;
+
+  --user-modal-image: none;
+  --user-modal-position: center;
+  --user-modal-size: cover;
+  --user-modal-attachment: scroll;
+  --user-modal-filter: none;
+
+  /* Keep default Discord icon; no extra custom icon asset */
+  --home-icon: url("https://clearvision.github.io/icons/discord.svg");
+  --home-size: cover;
+
+  /* Fonts */
+  --main-font: "gg sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --code-font: Consolas, "gg mono", "Liberation Mono", Menlo, Courier, monospace;
+
+  /* Channel colours */
+  --channel-normal: var(--warm-brown);
+  --channel-muted: rgba(92, 64, 56, 0.50);
+  --channel-hover: var(--dusty-rose);
+  --channel-selected: var(--dark-branch);
+  --channel-selected-bg: rgba(217, 174, 184, 0.34);
+  --channel-unread: var(--dusty-rose);
+  --channel-unread-hover: var(--warm-brown);
+
+  /* Message / UI text */
+  --rihana-message-text: var(--blossom-pink);
+  --rihana-message-text-strong: var(--dusty-rose);
+  --rihana-ui-text: var(--warm-brown);
+  --rihana-ui-muted: rgba(92, 64, 56, 0.68);
+
+  /* Transparent panels */
+  --rihana-panel-soft: rgba(246, 239, 228, 0.54);
+  --rihana-panel-medium: rgba(234, 210, 213, 0.42);
+  --rihana-panel-strong: rgba(255, 250, 247, 0.80);
+  --rihana-panel-border: rgba(217, 174, 184, 0.28);
+}
+
+/* Discord Light Mode tuning */
+:is(.theme-light, .theme-dark .theme-light) {
+  color-scheme: light;
+
+  /* ClearVision v7 shading values */
+  --background-shading: rgba(246, 239, 228, 0.22);
+  --card-shading: rgba(255, 250, 247, 0.30);
+  --popout-shading: rgba(255, 250, 247, 0.76);
+  --modal-shading: rgba(255, 250, 247, 0.82);
+  --input-shading: rgba(255, 250, 247, 0.56);
+  --normal-text: var(--rihana-ui-text);
+  --muted-text: var(--rihana-ui-muted);
+
+  /* Discord readable light-mode variables */
+  --text-normal: var(--rihana-ui-text);
+  --text-muted: var(--rihana-ui-muted);
+  --text-link: var(--dusty-rose);
+
+  --header-primary: var(--warm-brown);
+  --header-secondary: var(--dusty-rose);
+
+  --interactive-normal: var(--dusty-rose);
+  --interactive-hover: var(--warm-brown);
+  --interactive-active: var(--dark-branch);
+  --interactive-muted: rgba(92, 64, 56, 0.42);
+
+  --background-primary: var(--rihana-panel-soft);
+  --background-secondary: rgba(246, 239, 228, 0.50);
+  --background-secondary-alt: rgba(234, 210, 213, 0.42);
+  --background-tertiary: rgba(216, 205, 212, 0.36);
+  --background-accent: rgba(217, 174, 184, 0.30);
+  --background-floating: var(--rihana-panel-strong);
+  --channeltextarea-background: rgba(255, 250, 247, 0.58);
+}
+
+/* Background safety override, so old cached Sapphire/default visuals get overwritten */
+html,
+body {
+  background-image: var(--rihana-background) !important;
+  background-position: center !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-attachment: fixed !important;
+}
+
+:is(.theme-light, .theme-dark .theme-light) body,
+:is(.theme-light, .theme-dark .theme-light) #app-mount,
+:is(.theme-light, .theme-dark .theme-light) [class*="appMount_"],
+:is(.theme-light, .theme-dark .theme-light) [class*="bg_"] {
+  background-color: transparent !important;
+}
+
+/* DM/message text: flower pink */
+:is(.theme-light, .theme-dark .theme-light) [class*="messageContent_"],
+:is(.theme-light, .theme-dark .theme-light) [class*="markup_"] {
+  color: var(--rihana-message-text) !important;
+  text-shadow: none !important;
+}
+
+/* Bold, links, and strong text: deeper flower/dusty rose for readability */
+:is(.theme-light, .theme-dark .theme-light) [class*="messageContent_"] strong,
+:is(.theme-light, .theme-dark .theme-light) [class*="markup_"] strong,
+:is(.theme-light, .theme-dark .theme-light) [class*="messageContent_"] b,
+:is(.theme-light, .theme-dark .theme-light) [class*="markup_"] b,
+:is(.theme-light, .theme-dark .theme-light) [class*="messageContent_"] a,
+:is(.theme-light, .theme-dark .theme-light) [class*="markup_"] a {
+  color: var(--rihana-message-text-strong) !important;
+}
+
+/* Names, headers, and labels stay readable */
+:is(.theme-light, .theme-dark .theme-light) [class*="username_"],
+:is(.theme-light, .theme-dark .theme-light) [class*="name_"],
+:is(.theme-light, .theme-dark .theme-light) [class*="title_"],
+:is(.theme-light, .theme-dark .theme-light) [class*="header_"],
+:is(.theme-light, .theme-dark .theme-light) [class*="membersGroup_"],
+:is(.theme-light, .theme-dark .theme-light) [class*="topic_"] {
+  color: var(--warm-brown) !important;
+}
+
+/* Text box/input readability */
+:is(.theme-light, .theme-dark .theme-light) textarea,
+:is(.theme-light, .theme-dark .theme-light) [role="textbox"],
+:is(.theme-light, .theme-dark .theme-light) [class*="channelTextArea_"] {
+  color: var(--warm-brown) !important;
+  background-color: rgba(255, 250, 247, 0.58) !important;
+}
+
+/* Soft hover only */
+:is(.theme-light, .theme-dark .theme-light) [class*="message_"]:hover {
+  background: rgba(217, 174, 184, 0.10) !important;
+}
+
+:is(.theme-light, .theme-dark .theme-light) ::selection {
+  color: var(--dark-branch);
+  background: rgba(217, 174, 184, 0.38);
+}
+
+/* Palette-matched scrollbars */
+:is(.theme-light, .theme-dark .theme-light) ::-webkit-scrollbar-thumb {
+  background-color: rgba(185, 139, 145, 0.48) !important;
+  border-color: transparent !important;
+}
+
+:is(.theme-light, .theme-dark .theme-light) ::-webkit-scrollbar-track {
+  background-color: rgba(246, 239, 228, 0.18) !important;
+}
+
+/*
+ * Optimisation summary:
+ * - ClearVision v7 only.
+ * - One custom background image.
+ * - No animated background.
+ * - No repeated background images in popouts/modals.
+ * - No global blur/backdrop-filter spam.
+ * - Light Mode palette from the uploaded cherry blossom image.
+ */
