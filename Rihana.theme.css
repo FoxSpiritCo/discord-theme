@@ -1,0 +1,166 @@
+/**
+ * @name Rihana Theme
+ * @author Seli + Rihana
+ * @version 1.0.0
+ * @description Lightweight optimized ClearVision-based Vencord theme using a custom misty cherry blossom background.
+ * @source https://github.com/FoxSpiritCo/discord-theme
+ */
+
+/* ClearVision base only. This imports the styling engine, not ClearVision's default wallpaper config. */
+@import url("https://clearvision.github.io/ClearVision-v6/main.css");
+
+:root {
+  /* Main image */
+  --rihana-background: url("https://raw.githubusercontent.com/FoxSpiritCo/discord-theme/main/9dd3f733c9b1538c9c30a27ccda99370.png");
+
+  /* Palette pulled from the misty cherry blossom background */
+  --soft-cream: #f6efe4;
+  --mist-pink: #ead2d5;
+  --blossom-pink: #d9aeb8;
+  --dusty-rose: #b98b91;
+  --warm-brown: #5c4038;
+  --fog-lavender: #d8cdd4;
+  --dark-branch: #2d211f;
+
+  /* ClearVision background config: one image only, no default CV wallpaper */
+  --background-image: var(--rihana-background);
+  --background-position: center;
+  --background-size: cover;
+  --background-attachment: scroll;
+  --background-filter: none;
+  --background-blur: 0px;
+  --background-overlay: rgba(246, 239, 228, 0.22);
+  --background-shading: 0%;
+
+  /* Disable extra ClearVision image layers for less loading */
+  --user-popout-image: none;
+  --user-popout-position: center;
+  --user-popout-size: cover;
+  --user-popout-attachment: scroll;
+  --user-popout-filter: none;
+  --user-modal-image: none;
+  --user-modal-position: center;
+  --user-modal-size: cover;
+  --user-modal-attachment: scroll;
+  --user-modal-filter: none;
+  --backdrop-image: none;
+  --backdrop-position: center;
+  --backdrop-size: cover;
+  --backdrop-attachment: scroll;
+  --backdrop-filter: none;
+
+  /* ClearVision glass/transparency, kept soft and light */
+  --main-color: var(--blossom-pink);
+  --hover-color: var(--dusty-rose);
+  --success-color: #91b89a;
+  --danger-color: #c77d86;
+  --url-color: var(--dusty-rose);
+  --focus-color: rgba(217, 174, 184, 0.42);
+
+  --message-text: var(--blossom-pink);
+  --message-text-strong: var(--dusty-rose);
+  --ui-text: var(--warm-brown);
+  --ui-muted: rgba(92, 64, 56, 0.68);
+
+  --panel-soft: rgba(246, 239, 228, 0.66);
+  --panel-medium: rgba(234, 210, 213, 0.58);
+  --panel-strong: rgba(255, 250, 247, 0.76);
+  --panel-border: rgba(217, 174, 184, 0.28);
+
+  /* Reduce heavy effects */
+  --app-radius: 12px;
+  --window-margin: 0px;
+  --window-padding: 0px;
+  --transition-time: 0.08s;
+  --text-shadow: none;
+}
+
+/* Designed for Discord Light Mode */
+.theme-light {
+  color-scheme: light;
+
+  --text-normal: var(--ui-text);
+  --text-muted: var(--ui-muted);
+  --text-link: var(--dusty-rose);
+  --header-primary: var(--warm-brown);
+  --header-secondary: var(--dusty-rose);
+  --interactive-normal: var(--dusty-rose);
+  --interactive-hover: var(--warm-brown);
+  --interactive-active: var(--dark-branch);
+  --interactive-muted: rgba(92, 64, 56, 0.42);
+
+  --background-primary: var(--panel-soft);
+  --background-secondary: rgba(246, 239, 228, 0.58);
+  --background-secondary-alt: rgba(234, 210, 213, 0.52);
+  --background-tertiary: rgba(216, 205, 212, 0.46);
+  --background-accent: rgba(217, 174, 184, 0.35);
+  --background-floating: rgba(255, 250, 247, 0.86);
+  --background-mobile-primary: var(--panel-soft);
+  --background-mobile-secondary: rgba(246, 239, 228, 0.60);
+  --channeltextarea-background: rgba(255, 250, 247, 0.72);
+  --modal-background: rgba(255, 250, 247, 0.88);
+  --modal-footer-background: rgba(234, 210, 213, 0.56);
+
+  --brand-experiment: var(--blossom-pink);
+  --brand-experiment-560: var(--dusty-rose);
+  --button-secondary-background: rgba(234, 210, 213, 0.52);
+  --button-secondary-background-hover: rgba(217, 174, 184, 0.62);
+}
+
+/* Keep Discord/ClearVision transparent without expensive blur. */
+.theme-light body,
+.theme-light #app-mount,
+.theme-light .appMount_ea7e65,
+.theme-light [class*="appMount_"] {
+  background: transparent !important;
+}
+
+/* Blossom-coloured DM/message text as requested. */
+.theme-light [class*="messageContent_"],
+.theme-light [class*="markup_"] {
+  color: var(--message-text) !important;
+  text-shadow: none !important;
+}
+
+.theme-light [class*="messageContent_"] strong,
+.theme-light [class*="markup_"] strong,
+.theme-light [class*="messageContent_"] b,
+.theme-light [class*="markup_"] b {
+  color: var(--message-text-strong) !important;
+}
+
+/* Soft hover/selection only; no heavy animations. */
+.theme-light [class*="message_"]:hover {
+  background: rgba(217, 174, 184, 0.10) !important;
+}
+
+.theme-light ::selection {
+  color: var(--dark-branch);
+  background: rgba(217, 174, 184, 0.38);
+}
+
+/* Inputs and message box: pale, readable, low-cost transparency. */
+.theme-light textarea,
+.theme-light [role="textbox"],
+.theme-light [class*="channelTextArea_"] {
+  color: var(--warm-brown) !important;
+  background-color: rgba(255, 250, 247, 0.56) !important;
+}
+
+/* Remove blur-heavy effects while keeping glassy transparency. */
+.theme-light *,
+.theme-light *::before,
+.theme-light *::after {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* Compact, clean scrollbars matched to the palette. */
+.theme-light ::-webkit-scrollbar-thumb {
+  background-color: rgba(185, 139, 145, 0.48) !important;
+  border-color: transparent !important;
+}
+
+.theme-light ::-webkit-scrollbar-track {
+  background-color: rgba(246, 239, 228, 0.18) !important;
+}
